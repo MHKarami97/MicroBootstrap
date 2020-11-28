@@ -28,6 +28,9 @@ namespace Game.Services.EventProcessor.Infrastructure.Mongo.Repositories
         public Task<GameEventSource> GetAsync(Guid id)
             => _repository.GetAsync(d => d.Id == id);
 
+        public Task<bool> ExistsAsync(Guid id)
+                 => _repository.ExistsAsync(r => r.Id == id);
+
         public IQueryable<GameEventSource> GetAll()
             => _repository.GetAll();
 

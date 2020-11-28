@@ -11,6 +11,7 @@ namespace Game.Services.EventProcessor.Core.Repositories
     {
         Task AddAsync(GameEventSource discount);
         Task UpdateAsync(GameEventSource discount);
+        Task<bool> ExistsAsync(Guid id);
         Task<GameEventSource> GetAsync(Guid id);
         IQueryable<GameEventSource> GetAll();
         Task<PagedResult<GameEventSource>> BrowseAsync(BrowseGameEventSource query);

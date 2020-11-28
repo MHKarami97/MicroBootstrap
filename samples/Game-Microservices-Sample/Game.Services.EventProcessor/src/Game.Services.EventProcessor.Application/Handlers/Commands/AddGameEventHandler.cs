@@ -6,6 +6,7 @@ using Game.Services.EventProcessor.Core.Messages.Events;
 using Game.Services.EventProcessor.Core.Repositories;
 using Microsoft.Extensions.Logging;
 using MicroBootstrap.Commands;
+using Game.Services.EventProcessor.Application.Exceptions;
 
 namespace Game.Services.EventProcessor.Application.Handlers.Commands
 {
@@ -25,6 +26,11 @@ namespace Game.Services.EventProcessor.Application.Handlers.Commands
 
         public async Task HandleAsync(AddGameEventSource command, ICorrelationContext context)
         {
+            if (await _gameSourceRepository.ExistsAsync(command.Id))
+            {
+                throw new GameEventSourceAlreadyExistsException(command.Id);
+            }
+
             var gameSource = new GameEventSource(command.Id, command.IsWin, command.Score);
             await _gameSourceRepository.AddAsync(gameSource);
 
