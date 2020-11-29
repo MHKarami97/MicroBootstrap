@@ -5,6 +5,10 @@ namespace Game.Services.EventProcessor.Tests.Shared.Factories
 {
     public class GameApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint : class
     {
-        protected override IWebHostBuilder CreateWebHostBuilder() => base.CreateWebHostBuilder().UseEnvironment("tests");
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            builder.UseEnvironment("tests");
+            base.ConfigureWebHost(builder);
+        }
     }
 }
