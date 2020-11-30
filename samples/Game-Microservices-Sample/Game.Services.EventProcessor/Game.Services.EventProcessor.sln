@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Services.EventProcesso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Services.EventProcessor.Tests.Unit", "tests\Game.Services.EventProcessor.Tests.Unit\Game.Services.EventProcessor.Tests.Unit.csproj", "{24C42C99-2AB7-4FDE-9AE9-1EDF296137F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Services.EventProcessor.Tests.Performace", "tests\Game.Services.EventProcessor.Tests.Performace\Game.Services.EventProcessor.Tests.Performace.csproj", "{DA0C588B-887A-486A-8480-CBC7B9C3ED68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Services.EventProcessor.Tests.Performance", "tests\Game.Services.EventProcessor.Tests.Performance\Game.Services.EventProcessor.Tests.Performance.csproj", "{DA0C588B-887A-486A-8480-CBC7B9C3ED68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

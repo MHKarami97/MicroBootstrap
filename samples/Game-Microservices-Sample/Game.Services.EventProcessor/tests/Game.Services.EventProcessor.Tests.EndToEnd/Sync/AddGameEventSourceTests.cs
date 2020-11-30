@@ -16,7 +16,8 @@ using Shouldly;
 
 namespace Game.Services.EventProcessor.Tests.EndToEnd.Sync
 {
-    public class AddGameEventSourceTests : IClassFixture<GameApplicationFactory<Program>>,
+    //sync test only for web api
+    public class AddGameEventSourceTests : IClassFixture<GameApplicationFactory<Startup>>,
         IClassFixture<MongoDbFixture<GameEventSource, Guid>>, IDisposable
     {
         private Task<HttpResponseMessage> Act(AddGameEventSource command)
@@ -69,7 +70,7 @@ namespace Game.Services.EventProcessor.Tests.EndToEnd.Sync
         private readonly HttpClient _httpClient;
         private readonly MongoDbFixture<GameEventSource, Guid> _mongoDbFixture;
 
-        public AddGameEventSourceTests(GameApplicationFactory<Program> factory,
+        public AddGameEventSourceTests(GameApplicationFactory<Startup> factory,
             MongoDbFixture<GameEventSource, Guid> mongoDbFixture)
         {
             _mongoDbFixture = mongoDbFixture;

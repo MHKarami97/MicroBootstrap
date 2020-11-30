@@ -11,6 +11,7 @@ using RabbitMQ.Client.Events;
 
 namespace Game.Services.EventProcessor.Tests.Shared.Fixtures
 {
+    //pure rabbitmq client
     public class RabbitMqFixture
     {
         private readonly IModel _channel;
