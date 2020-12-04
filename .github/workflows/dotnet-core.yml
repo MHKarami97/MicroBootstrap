@@ -70,6 +70,6 @@ jobs:
        sh ./scripts/dotnet-publish-event-processcor-service.sh
        sh ./scripts/dotnet-publish-api-gateway.sh
        sh ./scripts/dotnet-publish-messaging-service.sh
-       sh./scripts/docker-publish-event-processor-service.sh
+       sh ./scripts/docker-publish-event-processor-service.sh
        sh ./scripts/docker-publish-messaging-service.sh
        sh ./scripts/docker-publish-api-gateway.sh
