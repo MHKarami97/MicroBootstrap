@@ -12,6 +12,7 @@ on:
 
 env:
   Github_ID: ${GITHUB_RUN_ID}
+  Branch_Name: ${GITHUB_REF}
 
 jobs:
   build:
@@ -28,7 +29,7 @@ jobs:
       uses: rlespinasse/github-slug-action@v3.x 
 
     - name: test1
-      run: echo ${{ env.Github_ID }}
+      run: echo ${{ env.Github_ID }} , ${{ env.Branch_Name }}
 
 
     - name: build
@@ -38,7 +39,7 @@ jobs:
         MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        Branch_Name: ${{ env.GITHUB_REF }}
+        Branch_Name: ${{ env.Branch_Name }}
         Github_ID: ${{ env.Github_ID }}
       run: |
        sh ./scripts/dotnet-build-micro-bootstrap.sh
@@ -53,7 +54,7 @@ jobs:
         MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        Branch_Name: ${{ env.GITHUB_REF }}
+        Branch_Name: ${{ env.Branch_Name }}
         Github_ID: ${{ env.Github_ID }}
       run: |
        sh ./scripts/dotnet-pack-micro-bootstrap.sh
