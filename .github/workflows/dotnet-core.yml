@@ -38,7 +38,7 @@ jobs:
 
     - name : test
       run: |
-        echo "git run id: ${{env.GITHUB_RUN_ID}}"
+        echo "git run id: ${GITHUB_REF#refs/heads/}.${GITHUB_SHA}
 
     - name: build
       env:
