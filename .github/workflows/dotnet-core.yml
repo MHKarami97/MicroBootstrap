@@ -45,7 +45,7 @@ jobs:
 
     - name: test1
       run: |
-          echo ${{ Branch_Name }} 
+          echo $Branch_Name 
 
 
     - name: build
