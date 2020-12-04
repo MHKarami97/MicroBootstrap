@@ -1,10 +1,10 @@
 #!/bin/bash
 echo Executing after success scripts on branch $Branch_Name
 echo Triggering MyGet package build
-echo 1.0.${resourceGroup2}
+echo 1.0.${Github_ID}
 
 cd src/MicroBootstrap
-dotnet pack /p:PackageVersion=1.0.${resourceGroup2}  --no-restore -o .
+dotnet pack /p:PackageVersion=1.0.${Github_ID}  --no-restore -o .
 
 echo Uploading MicroBootstrap package to MyGet using branch $Branch_Name
 
