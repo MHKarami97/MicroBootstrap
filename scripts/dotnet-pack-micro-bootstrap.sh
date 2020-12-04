@@ -3,7 +3,7 @@ echo Executing after success scripts on branch ${GITHUB_REF#refs/heads/}
 echo Triggering MyGet package build
 
 cd src/MicroBootstrap
-dotnet pack /p:PackageVersion=1.0.${{ github.run_id }} --no-restore -o .
+dotnet pack /p:PackageVersion=1.0.$Github.Id  --no-restore -o .
 
 echo Uploading MicroBootstrap package to MyGet using branch ${GITHUB_REF#refs/heads/}
 
