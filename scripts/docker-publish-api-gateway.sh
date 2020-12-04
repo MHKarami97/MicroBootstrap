@@ -2,9 +2,9 @@
 DOCKER_ENV=''
 DOCKER_TAG=''
 
-echo Branch Name is ${GITHUB_REF#refs/heads/}
+echo Branch Name is ${Branch_Name}
 
-case "${GITHUB_REF#refs/heads/}" in
+case "${Branch_Name}" in
   "master")
     DOCKER_TAG=latest
     ;;
