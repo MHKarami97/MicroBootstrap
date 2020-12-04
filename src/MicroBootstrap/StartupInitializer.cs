@@ -16,7 +16,6 @@ namespace MicroBootstrap
             }
 
             _initializers.Add(initializer);
-
         }
 
         public async Task InitializeAsync()
