@@ -1,7 +1,7 @@
 #!/bin/bash
 MYGET_ENV=""
-echo Branch Name is $Branch_Name
- case "$Branch_Name" in
+echo Branch Name is ${GITHUB_REF#refs/heads/}
+ case "${GITHUB_REF#refs/heads/}" in
    "develop")
      MYGET_ENV="-dev"
      ;;
