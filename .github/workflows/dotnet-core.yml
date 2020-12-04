@@ -30,7 +30,7 @@ jobs:
 
     - name: test1
       run: |
-        echo ${{ resourceGroup2 }} , ${ resourceGroup2 }
+         echo ${{ resourceGroup2 }} , ${ resourceGroup2 }
          echo ${{ resourceGroup1 }} , ${ resourceGroup1 }
 
 
@@ -42,7 +42,7 @@ jobs:
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         Branch_Name: ${{ env.Branch_Name }}
-        Github_ID: ${{ env.Github_ID }}
+        Github_ID: ${{ env.resourceGroup2 }}
       run: |
        sh ./scripts/dotnet-build-micro-bootstrap.sh
        sh ./scripts/dotnet-build-event-processcor-service.sh
@@ -57,6 +57,6 @@ jobs:
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         Branch_Name: ${{ env.Branch_Name }}
-        Github_ID: ${{ env.Github_ID }}
+        Github_ID: ${{ env.resourceGroup2 }}
       run: |
        sh ./scripts/dotnet-pack-micro-bootstrap.sh
