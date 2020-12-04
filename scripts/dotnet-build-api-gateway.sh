@@ -1,6 +1,7 @@
 #!/bin/bash
- MYGET_ENV=""
- case "$TRAVIS_BRANCH" in
+MYGET_ENV=""
+echo Branch Name is $Branch_Name
+ case "$Branch_Name" in
    "develop")
      MYGET_ENV="-dev"
      ;;
