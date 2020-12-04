@@ -5,6 +5,11 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+
+env:
+  resourceGroup1: ${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+  resourceGroup2: ${{ github.run_id }}-${{ github.run_number }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,10 +41,12 @@ jobs:
               echo "Short SHA variables"
               echo "   sha        : ${{ env.GITHUB_SHA_SHORT }}"
 
-    - name : test
-      run: |
-        echo "Branch: ${{ GITHUB_REF#refs/heads/ }} - ${{ GITHUB_SHA }}"
+    - name: test1
+      run: echo ${{ env.resourceGroup1 }}
 
+    - name: test2
+      run: echo ${{ env.resourceGroup2 }}
+      
     - name: build
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
