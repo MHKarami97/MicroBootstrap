@@ -7,17 +7,17 @@ on:
     branches: [ master ]
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    - name: dotnet-build-micro-bootstrap
+    
+    - name: accesst to files
       run: chmod -R a+x scripts
+      
     - name: dotnet-build-micro-bootstrap
       run: ./scripts/dotnet-build-micro-bootstrap.sh
     
@@ -29,24 +29,5 @@ jobs:
       
     - name: dotnet-build-api-gateway
       run: ./scripts/dotnet-build-api-gateway.sh
-      
-    - name: dotnet-build-api-gateway
+    - name : pack
       run: ./scripts/dotnet-pack-micro-bootstrap.sh
-      
-    - name: dotnet-publish-event-processcor-service
-      run: ./scripts/dotnet-publish-event-processcor-service.sh
-    
-    - name: dotnet-publish-api-gateway
-      run: ./scripts/dotnet-publish-api-gateway.sh
-    
-    - name: scripts/dotnet-publish-messaging-service
-      run: ./scripts/dotnet-publish-messaging-service.sh
-    
-    - name: docker-publish-event-processor-service
-      run: ./scripts/docker-publish-event-processor-service.sh
-      
-    - name: docker-publish-messaging-service
-      run: ./scripts/docker-publish-messaging-service.sh
-    
-    - name: docker-publish-api-gateway
-      run: ./scripts/docker-publish-api-gateway.sh
