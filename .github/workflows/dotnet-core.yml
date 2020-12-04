@@ -24,7 +24,7 @@ jobs:
         echo ${{ env.GITHUB_HEAD_REF_SLUG }}
         echo ${{ env.GITHUB_BASE_REF_SLUG }}
         echo ${{ env.GITHUB_RUN_ID_REF_SLUG }}
-        echo ${{ env.GITHUB_RUN_ID_SLUG }}
+        echo ${{ GITHUB_RUN_ID }}
 
     - name: build
       env:
@@ -34,7 +34,7 @@ jobs:
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         Branch_Name: ${{ env.GITHUB_REF_SLUG }}
-        Github_Id: ${{ env.GITHUB_RUN_ID_SLUG }}
+        Github_Id: ${{ GITHUB_RUN_ID }}
       run: |
        sh ./scripts/dotnet-build-micro-bootstrap.sh
        sh ./scripts/dotnet-build-event-processcor-service.sh
@@ -49,6 +49,6 @@ jobs:
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         Branch_Name: ${{ env.GITHUB_REF_SLUG }}
-        Github_Id: ${{ env.GITHUB_RUN_ID_SLUG }}
+        Github_Id: ${{ GITHUB_RUN_ID }}
       run: |
        sh ./scripts/dotnet-pack-micro-bootstrap.sh
