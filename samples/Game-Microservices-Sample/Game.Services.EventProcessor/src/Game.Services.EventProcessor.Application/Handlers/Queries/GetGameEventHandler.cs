@@ -23,8 +23,7 @@ namespace Game.Services.EventProcessor.Application.Handlers.Queries
             {
                 Id = gameEventSource.Id,
                 IsWin = gameEventSource.IsWin,
-                Score = gameEventSource.Score,
-                UserId = gameEventSource.UserId
+                Score = gameEventSource.Score
             };
         }
     }

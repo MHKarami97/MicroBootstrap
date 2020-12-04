@@ -23,8 +23,7 @@ namespace Game.Services.EventProcessor.Application.Handlers.Queries
             {
                 Id = c.Id,
                 Score = c.Score,
-                IsWin = c.IsWin,
-                UserId = c.UserId
+                IsWin = c.IsWin
             });
 
             return PagedResult<GameEventSourceDto>.From(pagedResult, result);

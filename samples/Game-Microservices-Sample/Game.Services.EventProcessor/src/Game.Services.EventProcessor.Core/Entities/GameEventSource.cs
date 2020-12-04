@@ -5,24 +5,19 @@ namespace Game.Services.EventProcessor.Core.Entities
 {
     public class GameEventSource : IIdentifiable<Guid>
     {
-        public Guid Id { get; private set; }
-        public bool IsWin { get; private set; }
-        public int Score { get; private set; }
-        public Guid UserId { get; private set; }
+        public Guid Id { get; set; }
+        public bool IsWin { get; set; }
+        public int Score { get; set; }
+
         private GameEventSource()
         {
         }
 
-        public GameEventSource(Guid id, bool isWin, int score, Guid userId)
+        public GameEventSource(Guid id, bool isWin, int score)
         {
             if (id == Guid.Empty)
             {
                 throw new InvalidGameEventSourceIdException();
-            }
-
-            if (userId == Guid.Empty)
-            {
-                throw new CustomException("Invalid_GameEventSource_UserId", "Invalid GameEventSource UserId.");
             }
 
             if (score < 0)
@@ -33,13 +28,6 @@ namespace Game.Services.EventProcessor.Core.Entities
             Id = id;
             Score = score;
             IsWin = isWin;
-            UserId = userId;
-        }
-        public GameEventSource UpdateScoreAndIsWin(int score, bool isWin)
-        {
-            this.Score = score;
-            this.IsWin = isWin;
-            return this;
         }
 
         // for new resource we use static factory method and once we fetch data from database and we want to restore that as a aggregate 
