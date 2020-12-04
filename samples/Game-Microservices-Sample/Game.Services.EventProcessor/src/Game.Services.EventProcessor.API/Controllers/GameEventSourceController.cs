@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using MicroBootstrap.Commands.Dispatchers;
 using MicroBootstrap.Queries;
@@ -14,7 +15,8 @@ namespace Game.Services.EventProcessor.API.Controllers
     [Route("game-event-sources")]
     public class GameEventSourcesController : BaseController
     {
-        public GameEventSourcesController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher) : base(commandDispatcher, queryDispatcher)
+        public GameEventSourcesController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher) :
+            base(commandDispatcher, queryDispatcher)
         {
         }
 
@@ -29,8 +31,8 @@ namespace Game.Services.EventProcessor.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(AddGameEventSource command)
         {
-            await SendAsync(command.Bind(c => c.Id, command.Id == default ? Guid.NewGuid() : command.Id));
-            return Accepted();
+            await SendAsync(command.Bind(c => c.Id, command.Id == Guid.Empty ? Guid.NewGuid() : command.Id));
+            return Created($"game-event-sources/{command.Id}", command);
         }
     }
 }

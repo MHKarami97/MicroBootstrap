@@ -6,7 +6,7 @@ namespace MicroBootstrap
 {
     public class StartupInitializer : IStartupInitializer
     {
-         private readonly IList<IInitializer> _initializers = new List<IInitializer>();
+        private readonly IList<IInitializer> _initializers = new List<IInitializer>();
 
         public void AddInitializer(IInitializer initializer)
         {
@@ -14,9 +14,7 @@ namespace MicroBootstrap
             {
                 return;
             }
-
             _initializers.Add(initializer);
-
         }
 
         public async Task InitializeAsync()

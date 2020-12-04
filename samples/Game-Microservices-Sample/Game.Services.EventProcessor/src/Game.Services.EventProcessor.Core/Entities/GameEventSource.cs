@@ -1,4 +1,5 @@
 using System;
+using Game.Services.EventProcessor.Core.Entities.Exceptions;
 using MicroBootstrap.Types;
 namespace Game.Services.EventProcessor.Core.Entities
 {
@@ -16,7 +17,7 @@ namespace Game.Services.EventProcessor.Core.Entities
         {
             if (id == Guid.Empty)
             {
-                throw new CustomException("Invalid_GameEventSource_Id", "Invalid GameEventSource Id.");
+                throw new InvalidGameEventSourceIdException();
             }
 
             if (userId == Guid.Empty)
@@ -26,8 +27,7 @@ namespace Game.Services.EventProcessor.Core.Entities
 
             if (score < 0)
             {
-                throw new CustomException("Invalid_Score",
-                    $"Invalid Score: {score}, The score can't be negative.");
+                throw new InvalidGameEventSourceScoreException();
             }
 
             Id = id;
@@ -41,5 +41,18 @@ namespace Game.Services.EventProcessor.Core.Entities
             this.IsWin = isWin;
             return this;
         }
+
+        // for new resource we use static factory method and once we fetch data from database and we want to restore that as a aggregate 
+        // we will use aggregate constructor and we don't have events in constructor 
+        public static GameEventSource Create(Guid id, bool isWin, int score)
+        {
+            var gameEventSource = new GameEventSource(id, isWin, score); //calling our internal constructor
+            //we can add events to our domain model for event sourcing here
+            //gameEventSource.AddEvent(new GameEventSourceCreated(gameEventSource));
+            return gameEventSource;
+        }
+
+
+
     }
 }
