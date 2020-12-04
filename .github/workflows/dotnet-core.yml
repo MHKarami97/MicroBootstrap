@@ -14,20 +14,35 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
-    
-    - name: accesst to files
-      run: chmod -R a+x scripts
-      
-    - name: dotnet-build-micro-bootstrap
-      run: ./scripts/dotnet-build-micro-bootstrap.sh
-    
-    - name: dotnet-build-event-processcor-service
-      run: ./scripts/dotnet-build-event-processcor-service.sh
-      
-    - name: dotnet-build-messaging-service
-      run:  ./scripts/dotnet-build-messaging-service.sh
-      
-    - name: dotnet-build-api-gateway
-      run: ./scripts/dotnet-build-api-gateway.sh
-    - name : pack
-      run: ./scripts/dotnet-pack-micro-bootstrap.sh
+
+    - uses: rlespinasse/github-slug-action@master
+    - name: Print slug variables
+      run: |
+        echo ${{ env.GITHUB_REF_SLUG }}
+        echo ${{ env.GITHUB_HEAD_REF_SLUG }}
+        echo ${{ env.GITHUB_BASE_REF_SLUG }}
+
+    - name: build
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
+        MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        Branch_Name: ${{ env.GITHUB_REF_SLUG }}
+      run: |
+       sh ./scripts/dotnet-build-micro-bootstrap.sh
+       sh ./scripts/dotnet-build-event-processcor-service.sh
+       sh ./scripts/dotnet-build-messaging-service.sh
+       sh ./scripts/dotnet-build-api-gateway.sh
+
+    - name: Publish
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
+        MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        Branch_Name: ${{ env.GITHUB_REF_SLUG }}
+      run: |
+       sh ./scripts/dotnet-pack-micro-bootstrap.sh
