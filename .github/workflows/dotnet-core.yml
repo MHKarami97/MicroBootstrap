@@ -41,7 +41,6 @@ jobs:
         echo "git run id: ${{env.GITHUB_RUN_ID}}"
 
     - name: build
-    - uses: FranzDiebold/github-env-vars-action@v
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
