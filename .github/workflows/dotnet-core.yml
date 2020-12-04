@@ -6,19 +6,19 @@ on:
   pull_request:
     branches: [ master ]
 
-# env:
-#   resourceGroup1: ${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
-#   resourceGroup2: ${{ github.run_id }}-${{ github.run_number }}
-
 env:
-  Github_ID: ${GITHUB_RUN_ID}
-  Branch_Name: ${GITHUB_REF}
+  resourceGroup1: ${GITHUB_RUN_ID}-${GITHUB_RUN_NUMBER}
+  resourceGroup2: ${{ github.run_id }}-${{ github.run_number }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Set environment variables      
+      run: |        
+        $versionNumber = "$versionfromFile.${env:GITHUB_RUN_ID}"
+         echo "::set-env name=Github_ID::$versionNumber"   
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
@@ -29,7 +29,9 @@ jobs:
       uses: rlespinasse/github-slug-action@v3.x 
 
     - name: test1
-      run: echo ${{ env.Github_ID }} , ${{ env.Branch_Name }}
+      run: |
+        echo ${{ resourceGroup2 }} , ${ resourceGroup2 }
+         echo ${{ resourceGroup1 }} , ${ resourceGroup1 }
 
 
     - name: build
