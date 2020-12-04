@@ -9,10 +9,10 @@ echo Uploading MicroBootstrap package to MyGet using branch ${GITHUB_REF#refs/he
 
 case "${GITHUB_REF#refs/heads/}" in
   "master")
-    dotnet nuget push *.nupkg -k $MYGET_API_KEY -s https://www.myget.org/F/micro-bootstrap/api/v3/index.json
+    dotnet nuget push *.nupkg -s https://www.myget.org/F/micro-bootstrap/api/v3/index.json -k $MYGET_API_KEY 
     ;;
   "develop")
-    dotnet nuget push *.nupkg -k $MYGET_DEV_API_KEY -s https://www.myget.org/F/micro-bootstrap-dev/api/v3/index.json
+    dotnet nuget push *.nupkg -s https://www.myget.org/F/micro-bootstrap-dev/api/v3/index.json -k $MYGET_DEV_API_KEY 
     ;;    
 esac
 
