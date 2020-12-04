@@ -17,24 +17,21 @@ jobs:
 
     - name: GitHub Slug Action
       uses: rlespinasse/github-slug-action@3.1.0
-
-    - name: Print slug variables
       run: |
         echo ${{ env.GITHUB_REF_SLUG }}
         echo ${{ env.GITHUB_HEAD_REF_SLUG }}
         echo ${{ env.GITHUB_BASE_REF_SLUG }}
         echo ${{ env.GITHUB_RUN_ID_REF_SLUG }}
-        echo ${{ GITHUB_RUN_ID }}
 
     - name: build
+      uses: FranzDiebold/github-env-vars-action@v2
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        Branch_Name: ${{ env.GITHUB_REF_SLUG }}
-        Github_Id: ${{ GITHUB_RUN_ID }}
+        Branch_Name: ${{ CI_REF }}
       run: |
        sh ./scripts/dotnet-build-micro-bootstrap.sh
        sh ./scripts/dotnet-build-event-processcor-service.sh
@@ -42,13 +39,13 @@ jobs:
        sh ./scripts/dotnet-build-api-gateway.sh
 
     - name: Publish
+      uses: FranzDiebold/github-env-vars-action@v2
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         MYGET_API_KEY: ${{ secrets.MYGET_API_KEY }}
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-        Branch_Name: ${{ env.GITHUB_REF_SLUG }}
-        Github_Id: ${{ GITHUB_RUN_ID }}
+        Branch_Name: ${{ CI_REF }}
       run: |
        sh ./scripts/dotnet-pack-micro-bootstrap.sh
