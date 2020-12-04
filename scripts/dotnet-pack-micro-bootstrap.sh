@@ -1,6 +1,7 @@
 #!/bin/bash
 echo Executing after success scripts on branch ${GITHUB_REF#refs/heads/}
 echo Triggering MyGet package build
+echo 1.0.$Github.Id
 
 cd src/MicroBootstrap
 dotnet pack /p:PackageVersion=1.0.$Github.Id  --no-restore -o .
