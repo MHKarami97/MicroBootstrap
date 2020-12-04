@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 env:
-  Branch_Name: ${ GITHUB_REF#refs/heads/ }
+  Branch_Name: ${ GITHUB_REF##*/ }
   Github_ID: ${{ github.run_id }}
 
 jobs:
@@ -24,10 +24,9 @@ jobs:
     - name: Inject slug/short variables
       uses: rlespinasse/github-slug-action@v3.x 
 
-    # - name: test1
-    #   run: |
-    #      echo ${{ resourceGroup2 }} , ${ resourceGroup2 }
-    #      echo ${{ resourceGroup1 }} , ${ resourceGroup1 }
+    - name: test1
+      run: |
+          echo ${{ env.Branch_Name }} 
 
 
     - name: build
