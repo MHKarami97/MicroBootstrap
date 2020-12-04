@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 env:
-  Branch_Name: ${GITHUB_REF}
+  Branch_Name: ${{ GITHUB_REF }}
   Github_ID: ${{ github.run_id }}
 
 jobs:
