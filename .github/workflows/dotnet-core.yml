@@ -15,7 +15,9 @@ jobs:
       with:
         dotnet-version: 3.1.301
 
-    - uses: rlespinasse/github-slug-action@master
+    - name: GitHub Slug Action
+      uses: rlespinasse/github-slug-action@3.1.0
+      
     - name: Print slug variables
       run: |
         echo ${{ env.GITHUB_REF_SLUG }}
