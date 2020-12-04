@@ -39,6 +39,7 @@ jobs:
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         Branch_Name: ${{ env.GITHUB_REF }}
+        Github_ID: ${{ env.Github_ID }}
       run: |
        sh ./scripts/dotnet-build-micro-bootstrap.sh
        sh ./scripts/dotnet-build-event-processcor-service.sh
@@ -53,5 +54,6 @@ jobs:
         MYGET_DEV_API_KEY: ${{ secrets.MYGET_DEV_API_KEY }}
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         Branch_Name: ${{ env.GITHUB_REF }}
+        Github_ID: ${{ env.Github_ID }}
       run: |
        sh ./scripts/dotnet-pack-micro-bootstrap.sh
