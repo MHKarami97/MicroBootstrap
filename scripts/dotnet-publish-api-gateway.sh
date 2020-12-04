@@ -2,7 +2,7 @@
 
 #!/bin/bash
  MYGET_ENV=""
- case "$Branch_Name" in
+ case "${GITHUB_REF#refs/heads/}" in
    "develop")
      MYGET_ENV="-dev"
      ;;
