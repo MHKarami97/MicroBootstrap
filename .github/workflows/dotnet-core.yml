@@ -11,15 +11,37 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: github environment variables
-    - uses: FranzDiebold/github-env-vars-action@v2
-
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
 
+    - name: Inject slug/short variables
+      uses: rlespinasse/github-slug-action@v3.x 
+
+    - name: Print slug/short variables
+      run: |
+              echo "Slug variables"
+              echo "   ref        : ${{ env.GITHUB_REF_SLUG }}"
+              echo "   head ref   : ${{ env.GITHUB_HEAD_REF_SLUG }}"
+              echo "   base ref   : ${{ env.GITHUB_BASE_REF_SLUG }}"
+              echo "   event ref  : ${{ env.GITHUB_EVENT_REF_SLUG }}"
+              echo "   repository : ${{ env.GITHUB_REPOSITORY_SLUG }}"
+              echo "Slug URL variables"
+              echo "   ref        : ${{ env.GITHUB_REF_SLUG_URL }}"
+              echo "   head ref   : ${{ env.GITHUB_HEAD_REF_SLUG_URL }}"
+              echo "   base ref   : ${{ env.GITHUB_BASE_REF_SLUG_URL }}"
+              echo "   event ref  : ${{ env.GITHUB_EVENT_REF_SLUG_URL }}"
+              echo "   repository : ${{ env.GITHUB_REPOSITORY_SLUG_URL }}"
+              echo "Short SHA variables"
+              echo "   sha        : ${{ env.GITHUB_SHA_SHORT }}"
+
+    - name : test
+      run: |
+        echo "git run id: ${{env.GITHUB_RUN_ID}}"
+
     - name: build
+    - uses: FranzDiebold/github-env-vars-action@v2
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -34,6 +56,7 @@ jobs:
        sh ./scripts/dotnet-build-api-gateway.sh
 
     - name: Publish
+    - uses: FranzDiebold/github-env-vars-action@v2
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
