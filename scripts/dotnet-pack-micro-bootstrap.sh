@@ -11,7 +11,7 @@ echo 1.0.${Github_ID}
  esac
 
 cd src/MicroBootstrap
-dotnet pack /p:PackageVersion=1.0.${Github_ID}${MYGET_ENV}  --no-restore -o .
+dotnet pack /p:PackageVersion=1.1.${Github_ID}${MYGET_ENV}  --no-restore -o .
 
 echo Uploading MicroBootstrap package to MyGet using branch ${Branch_Name}
 
