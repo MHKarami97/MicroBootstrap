@@ -2,9 +2,9 @@ name: publish
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
 
 env:
   Github_ID: ${{ github.run_id }}

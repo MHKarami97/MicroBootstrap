@@ -3,8 +3,15 @@ echo Executing after success scripts on branch ${Branch_Name}
 echo Triggering MyGet package build
 echo 1.0.${Github_ID}
 
+ MYGET_ENV=""
+ case "${Branch_Name}" in
+   "develop")
+     MYGET_ENV="-dev"
+     ;;
+ esac
+
 cd src/MicroBootstrap
-dotnet pack /p:PackageVersion=1.0.${Github_ID}  --no-restore -o .
+dotnet pack /p:PackageVersion=1.0.${Github_ID}${MYGET_ENV}  --no-restore -o .
 
 echo Uploading MicroBootstrap package to MyGet using branch ${Branch_Name}
 
