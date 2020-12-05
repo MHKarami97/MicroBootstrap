@@ -127,11 +127,13 @@ namespace MicroBootstrap.WebApi
             serviceCollection.AddErrorHandler<EmptyExceptionToResponseMapper>();
         }
 
-        public static void AddErrorHandler<T>(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddErrorHandler<T>(this IServiceCollection serviceCollection)
             where T : class, IExceptionToResponseMapper
         {
             serviceCollection.AddTransient<ErrorHandlerMiddleware>();
             serviceCollection.AddSingleton<IExceptionToResponseMapper, T>();
+            
+            return serviceCollection;
         }
 
         public static IApplicationBuilder UseErrorHandler(this IApplicationBuilder builder)
