@@ -1,24 +1,25 @@
 #!/bin/bash
-echo Executing after success scripts on branch $TRAVIS_BRANCH
+echo Executing after success scripts on branch ${Branch_Name}
 echo Triggering MyGet package build
+echo 1.0.${Github_ID}
 
 cd src/MicroBootstrap
-dotnet pack /p:PackageVersion=1.0.$TRAVIS_BUILD_NUMBER --no-restore -o .
+dotnet pack /p:PackageVersion=1.0.${Github_ID}  --no-restore -o .
 
-echo Uploading MicroBootstrap package to MyGet using branch $TRAVIS_BRANCH
+echo Uploading MicroBootstrap package to MyGet using branch ${Branch_Name}
 
-case "$TRAVIS_BRANCH" in
+case "${Branch_Name}" in
   "master")
-    dotnet nuget push *.nupkg -k $MYGET_API_KEY -s https://www.myget.org/F/micro-bootstrap/api/v3/index.json
+    dotnet nuget push *.nupkg -s https://www.myget.org/F/micro-bootstrap/api/v3/index.json -k $MYGET_API_KEY 
     ;;
   "develop")
-    dotnet nuget push *.nupkg -k $MYGET_DEV_API_KEY -s https://www.myget.org/F/micro-bootstrap-dev/api/v3/index.json
+    dotnet nuget push *.nupkg -s https://www.myget.org/F/micro-bootstrap-dev/api/v3/index.json -k $MYGET_DEV_API_KEY 
     ;;    
 esac
 
-echo Uploading MicroBootstrap package to Nuget using branch $TRAVIS_BRANCH
+echo Uploading MicroBootstrap package to Nuget using branch ${Branch_Name}
 
-case "$TRAVIS_BRANCH" in
+case "${Branch_Name}" in
   "master")
     dotnet nuget push *.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
     ;;

@@ -1,7 +1,10 @@
 #!/bin/bash
+DOCKER_ENV=''
 DOCKER_TAG=''
 
-case "$TRAVIS_BRANCH" in
+echo Branch Name is ${Branch_Name}
+
+case "${Branch_Name}" in
   "master")
     DOCKER_TAG=latest
     ;;

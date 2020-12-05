@@ -38,7 +38,7 @@ namespace Game.API.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Post(AddGameEventSource command)
-            => await SendAsync(command.Bind(c => c.Id, command.Id == Guid.Empty ? Guid.NewGuid() : command.Id),
+            => await SendAsync(command.Bind(c => c.Id, command.Id == default ? Guid.NewGuid() : command.Id),
                 resourceId: command.Id, resource: "game-event-sources");
 
         // [HttpPut("{id}")]

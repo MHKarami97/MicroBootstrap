@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Game.Services.Messaging.Core.DTO;
 using Game.Services.Messaging.Core.Messages.Events;
 using Game.Services.Messaging.Core.Services;
 
@@ -13,16 +14,18 @@ namespace Game.Services.Messaging.Application.Services
             _hubContextWrapper = hubContextWrapper;
         }
 
-        public async Task PublishGameEventSourceAddedAsync(GameEventSourceAdded @event)
+        public async Task PublishUserLeaderBoradInfoAsync(LeaderBoardPlayerDto @event)
         {
-            await _hubContextWrapper.PublishToAllAsync("game_event_source_added",
-                new
-                {
-                    id = @event.Id,
-                    score = @event.Score,
-                    isWin = @event.IsWin
-                }
-            );
+            await _hubContextWrapper.PublishToAllAsync("user_leader_board_info_added",
+                           new
+                           {
+                               userId = @event.UserId,
+                               userRank = @event.UserRank,
+                               userScore = @event.UserScore,
+                               leaderBoardPlayerBehind = @event.LeaderBoardPlayerBehind,
+                               leaderBoardPlayerAhead = @event.LeaderBoardPlayerAhead,
+                           }
+                       );
         }
     }
 }

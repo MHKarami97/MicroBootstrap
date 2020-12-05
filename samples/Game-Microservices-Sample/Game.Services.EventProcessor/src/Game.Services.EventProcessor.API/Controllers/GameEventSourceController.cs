@@ -8,6 +8,7 @@ using Game.Services.EventProcessor.Core.DTO;
 using Game.Services.EventProcessor.Core.Messages.Commands;
 using Game.Services.EventProcessor.Core.Messages.Queries;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Game.Services.EventProcessor.API.Controllers
 {

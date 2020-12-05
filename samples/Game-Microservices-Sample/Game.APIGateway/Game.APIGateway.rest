@@ -13,10 +13,12 @@ GET {{apiUrl}}/game-event-sources/{{gameEventSourceId}}
 POST {{apiUrl}}/game-event-sources
 content-type: application/json
 
-{
+{	
 	"isWin": true,
-	"score": 10,
+	"score": 120,
+	"userId":"f83dcc7e-e5b3-4ae6-9cf9-f0f76b865146"
 }
+
 
 # ### Update a product if needed
 # PUT {{apiUrl}}/products/{{gameEventSourceId}}

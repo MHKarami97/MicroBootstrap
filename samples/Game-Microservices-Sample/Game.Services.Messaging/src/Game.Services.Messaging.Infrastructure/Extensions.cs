@@ -13,6 +13,9 @@ using Consul;
 using MicroBootstrap.Metrics;
 using Microsoft.Extensions.DependencyInjection;
 using Game.Services.Messaging.Core.Messages.Events;
+using Game.Services.Messaging.Core.Entities;
+using Game.Services.Messaging.Infrastructure.Mongo.Repositories;
+using Game.Services.Messaging.Core.Repositories;
 
 namespace Game.Services.Messaging.Infrastructure
 {
@@ -21,6 +24,8 @@ namespace Game.Services.Messaging.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection)
         {
+            serviceCollection.AddTransient<IGameEventSourceRepository, GameEventSourceMongoRepository>();
+
             return serviceCollection
                 .AddHttpClient()
                 .AddConsul()
@@ -30,7 +35,9 @@ namespace Game.Services.Messaging.Infrastructure
                 .AddRedis()
                 .AddOpenTracing()
                 .AddJaeger()
-                .AddAppMetrics();
+                .AddAppMetrics()
+                .AddMongoRepository<GameEventSource, Guid>("gameEventSources")
+                .AddInitializers(typeof(IMongoDbInitializer));
         }
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)

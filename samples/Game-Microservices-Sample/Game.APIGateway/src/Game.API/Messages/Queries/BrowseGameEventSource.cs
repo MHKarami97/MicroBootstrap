@@ -1,6 +1,8 @@
+using MicroBootstrap.Queries;
+
 namespace Game.API.Messages.Queries
 {
-    public class BrowseGameEventSource : PagedQuery
+    public class BrowseGameEventSource : PagedQueryBase
     {
     }
 }

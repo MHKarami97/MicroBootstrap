@@ -21,14 +21,14 @@
       .catch((err) => appendMessage(err, "danger"));
   };
 
-  connection.on("game_event_source_added", (operation) => {
-    appendMessage("Game Event Source Added.", "success", operation);
+  connection.on("user_leader_board_info_added", (operation) => {
+    appendMessage("User Leader Board Info Added", "success", operation);
   });
 
   function appendMessage(message, type, data) {
     var dataInfo = "";
     if (data) {
-      dataInfo += "<div>Record Number Is: " + (++recordNumber) + "</div>";
+      dataInfo += "<div>Request Number Is: " + (++recordNumber) + "</div>";
       dataInfo += "<div>" + JSON.stringify(data) + "</div>";
     }
     $messages.innerHTML += `<li class="list-group-item list-group-item-${type}">${message} ${dataInfo}</li>`;
