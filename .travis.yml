@@ -15,14 +15,7 @@ script:
   - ./scripts/dotnet-build-event-processcor-service.sh
   - ./scripts/dotnet-build-messaging-service.sh
   - ./scripts/dotnet-build-api-gateway.sh
-after_success:
-  - ./scripts/dotnet-pack-micro-bootstrap.sh
-  - ./scripts/dotnet-publish-event-processcor-service.sh
-  - ./scripts/dotnet-publish-api-gateway.sh
-  - ./scripts/dotnet-publish-messaging-service.sh
-  - ./scripts/docker-publish-event-processor-service.sh
-  - ./scripts/docker-publish-messaging-service.sh
-  - ./scripts/docker-publish-api-gateway.sh
+
 notifications:
   email:
     on_success: never
