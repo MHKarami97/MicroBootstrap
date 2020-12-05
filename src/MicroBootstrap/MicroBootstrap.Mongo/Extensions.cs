@@ -44,7 +44,7 @@ namespace MicroBootstrap.Mongo
             BsonSerializer.RegisterSerializer(typeof(decimal), new DecimalSerializer(BsonType.Decimal128));
             BsonSerializer.RegisterSerializer(typeof(decimal?),
                 new NullableSerializer<decimal>(new DecimalSerializer(BsonType.Decimal128)));
-            ConventionRegistry.Register("convey", new ConventionPack
+            ConventionRegistry.Register("conventions", new ConventionPack
             {
                 new CamelCaseElementNameConvention(),
                 new IgnoreExtraElementsConvention(true),

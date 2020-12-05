@@ -41,7 +41,7 @@ namespace Game.Services.EventProcessor.Tests.Shared.Fixtures
             BsonSerializer.RegisterSerializer(typeof(decimal), new DecimalSerializer(BsonType.Decimal128));
             BsonSerializer.RegisterSerializer(typeof(decimal?),
                 new NullableSerializer<decimal>(new DecimalSerializer(BsonType.Decimal128)));
-            ConventionRegistry.Register("convey_conventions", new MongoDbConventions(), x => true);
+            ConventionRegistry.Register("conventions", new MongoDbConventions(), x => true);
         }
 
         private class MongoDbConventions : IConventionPack

@@ -1,4 +1,4 @@
-namespace MicroBootstrap.Logging
+namespace MicroBootstrap.Logging.Options
 {
     public class SeqOptions
     {

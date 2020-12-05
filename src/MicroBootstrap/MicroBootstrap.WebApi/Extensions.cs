@@ -42,7 +42,7 @@ namespace MicroBootstrap.WebApi
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            Converters = { new StringEnumConverter(true) }
+            Converters = { new StringEnumConverter(new CamelCaseNamingStrategy(), true) }
         };
 
         public static IApplicationBuilder UseApiEndpoints(this IApplicationBuilder app, Action<IEndpointsBuilder> build,
@@ -82,7 +82,7 @@ namespace MicroBootstrap.WebApi
                 var factory = new Open.Serialization.Json.Newtonsoft.JsonSerializerFactory(new JsonSerializerSettings
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    Converters = { new StringEnumConverter(true) }
+                    Converters = { new StringEnumConverter(new CamelCaseNamingStrategy(), true) }
                 });
                 jsonSerializer = factory.GetSerializer();
             }
