@@ -2,9 +2,9 @@ using System;
 
 namespace MicroBootstrap.Vault
 {
-    public class VaultException : Exception
+    internal sealed class VaultException : Exception
     {
-        public string Key { get; set; }
+        public string Key { get; }
         
         public VaultException(string key) : this(null, key)
         {
@@ -14,7 +14,7 @@ namespace MicroBootstrap.Vault
         {
         }
 
-        public VaultException(string message, Exception innerException, string key) : base(message)
+        public VaultException(string message, Exception innerException, string key) : base(message, innerException)
         {
             Key = key;
         }
