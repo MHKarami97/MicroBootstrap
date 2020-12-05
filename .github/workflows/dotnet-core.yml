@@ -7,7 +7,7 @@ on:
     branches: [ develop ]
 
 env:
-  Github_ID: ${{ github.run_id }}
+  Github_ID: ${{ github.run_number }}
 
 jobs:
   build:
