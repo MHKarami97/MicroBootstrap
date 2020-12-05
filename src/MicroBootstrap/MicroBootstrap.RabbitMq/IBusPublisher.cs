@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MicroBootstrap.Commands;
 using MicroBootstrap.Events;
@@ -12,5 +13,8 @@ namespace MicroBootstrap.RabbitMq
 
         Task PublishAsync<TEvent>(TEvent @event, ICorrelationContext context)
             where TEvent : IEvent;
+
+        Task PublishAsync<T>(T message, string messageId = null, string correlationId = null, string spanContext = null,
+         object messageContext = null, IDictionary<string, object> headers = null) where T : class;
     }
 }

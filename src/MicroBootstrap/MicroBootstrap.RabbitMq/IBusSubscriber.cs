@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using MicroBootstrap.Commands;
 using MicroBootstrap.Events;
 using MicroBootstrap.Messages;
@@ -13,5 +14,6 @@ namespace MicroBootstrap.RabbitMq
 
         IBusSubscriber SubscribeEvent<TEvent>(Func<TEvent, CustomException, IRejectedEvent> onError = null) 
             where TEvent : IEvent;
+        IBusSubscriber Subscribe<T>(Func<IServiceProvider, T, object, Task> handle) where T : class;
     }
 }
