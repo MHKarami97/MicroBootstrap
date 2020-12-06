@@ -57,7 +57,7 @@ namespace MicroBootstrap.WebApi
         }
 
         [Description("By default Newtonsoft JSON serializer is being used and it sets Kestrel's and IIS ServerOptions AllowSynchronousIO = true")]
-        public static void AddWebApi(this IServiceCollection serviceCollection, Action<IMvcCoreBuilder> configureMvc = null,
+        public static IServiceCollection AddWebApi(this IServiceCollection serviceCollection, Action<IMvcCoreBuilder> configureMvc = null,
             IJsonSerializer jsonSerializer = null, string webApiSectionName = WebApiSectionName, string appSectionName = AppsectionName)
         {
             serviceCollection.AddSingleton<IServiceId, ServiceId>();
@@ -125,6 +125,8 @@ namespace MicroBootstrap.WebApi
 
             serviceCollection.AddTransient<IRequestDispatcher, RequestDispatcher>();
             serviceCollection.AddErrorHandler<EmptyExceptionToResponseMapper>();
+
+            return serviceCollection;
         }
 
         public static IServiceCollection AddErrorHandler<T>(this IServiceCollection serviceCollection)
