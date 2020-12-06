@@ -1,4 +1,5 @@
 using System;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
 using MicroBootstrap.RabbitMq.Processors;
 using MicroBootstrap.Redis;
 using Microsoft.AspNetCore.Builder;
@@ -70,6 +71,13 @@ namespace MicroBootstrap.RabbitMq
             return serviceCollection;
         }
 
+        public static IServiceCollection AddExceptionToMessageMapper<T>(this IServiceCollection services)
+                  where T : class, IExceptionToMessageMapper
+        {
+            services.AddTransient<IExceptionToMessageMapper, T>();
+
+            return services;
+        }
         private static void ConfigureBus(IServiceCollection serviceCollection, Func<IRabbitMqPluginRegister,
             IRabbitMqPluginRegister> plugins = null)
         {
@@ -122,5 +130,6 @@ namespace MicroBootstrap.RabbitMq
 
             return clientBuilder;
         }
+
     }
 }
