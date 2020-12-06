@@ -29,10 +29,11 @@ namespace MicroBootstrap.RabbitMq
 
         public BusSubscriber(IApplicationBuilder app)
         {
-            _logger = app.ApplicationServices.GetService<ILogger<BusSubscriber>>();
+            _serviceProvider = app.ApplicationServices.GetService<IServiceProvider>();
+
+            _logger = _serviceProvider.GetService<ILogger<BusSubscriber>>();
             _exceptionToMessageMapper = _serviceProvider.GetService<IExceptionToMessageMapper>() ??
                                       new EmptyExceptionToMessageMapper();
-            _serviceProvider = app.ApplicationServices.GetService<IServiceProvider>();
             _busClient = _serviceProvider.GetService<IBusClient>();
             _tracer = _serviceProvider.GetService<ITracer>();
             var options = _serviceProvider.GetService<RabbitMqOptions>();

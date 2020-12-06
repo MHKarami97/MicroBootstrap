@@ -26,7 +26,7 @@ namespace Game.Services.Messaging.Application.Handlers.Events
             _logger = logger;
         }
 
-        public async Task HandleAsync(GameEventSourceAdded @event, ICorrelationContext context)
+        public async Task HandleAsync(GameEventSourceAdded @event)
         {
             var gameEventSource = await _gameEventSourceRepository.GetAsync(@event.Id);
             if (gameEventSource != null)

@@ -24,7 +24,7 @@ namespace Game.Services.EventProcessor.Application.Handlers.Commands
             _logger = logger;
         }
 
-        public async Task HandleAsync(AddGameEventSource command, ICorrelationContext context)
+        public async Task HandleAsync(AddGameEventSource command)
         {
             if (await _gameSourceRepository.ExistsAsync(command.Id))
             {
@@ -34,7 +34,7 @@ namespace Game.Services.EventProcessor.Application.Handlers.Commands
             var gameSource = new GameEventSource(command.Id, command.IsWin, command.Score);
             await _gameSourceRepository.AddAsync(gameSource);
 
-            await _busPublisher.PublishAsync(new GameEventSourceAdded(command.Id, command.Score, command.IsWin), context);
+            await _busPublisher.PublishAsync(new GameEventSourceAdded(command.Id, command.Score, command.IsWin));
         }
     }
 }
