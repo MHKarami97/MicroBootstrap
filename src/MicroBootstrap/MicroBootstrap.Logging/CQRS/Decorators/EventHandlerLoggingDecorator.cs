@@ -26,20 +26,20 @@ namespace MicroBootstrap.Logging.CQRS.Decorators
         }
 
 
-        public async Task HandleAsync(TEvent @event, ICorrelationContext context)
+        public async Task HandleAsync(TEvent @event)
         {
             var template = _mapper.Map(@event);
 
             if (template is null)
             {
-                await _handler.HandleAsync(@event, context);
+                await _handler.HandleAsync(@event);
                 return;
             }
 
             try
             {
                 Log(@event, template.Before);
-                await _handler.HandleAsync(@event, context);
+                await _handler.HandleAsync(@event);
                 Log(@event, template.After);
             }
             catch (Exception ex)

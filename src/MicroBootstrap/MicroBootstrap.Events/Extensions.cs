@@ -1,5 +1,6 @@
 using System;
 using MicroBootstrap.Events.Dispatchers;
+using MicroBootstrap.Types;
 using Microsoft.Extensions.DependencyInjection;
 namespace MicroBootstrap.Events
 {
@@ -14,7 +15,8 @@ namespace MicroBootstrap.Events
         {
             serviceCollection.Scan(s =>
             s.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
-                .AddClasses(c => c.AssignableTo(typeof(IEventHandler<>)))
+                .AddClasses(c => c.AssignableTo(typeof(IEventHandler<>))
+                  .WithoutAttribute(typeof(DecoratorAttribute)))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime());
             return serviceCollection;

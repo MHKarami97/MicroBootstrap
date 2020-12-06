@@ -14,7 +14,7 @@ namespace MicroBootstrap.Commands.Dispatchers
             _context = context;
         }
 
-        public async Task SendAsync<T>(T command, ICorrelationContext context) where T : ICommand
-            => await _context.Resolve<ICommandHandler<T>>().HandleAsync(command, context ?? CorrelationContext.Empty);
+        public async Task SendAsync<T>(T command) where T : ICommand
+            => await _context.Resolve<ICommandHandler<T>>().HandleAsync(command);
     }
 }

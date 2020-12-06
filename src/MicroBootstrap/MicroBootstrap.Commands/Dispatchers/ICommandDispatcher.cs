@@ -6,6 +6,6 @@ namespace MicroBootstrap.Commands.Dispatchers
 {
     public interface ICommandDispatcher
     {
-        Task SendAsync<T>(T command, ICorrelationContext context = null) where T : ICommand;
+        Task SendAsync<T>(T command) where T : ICommand;
     }
 }

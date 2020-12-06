@@ -49,8 +49,10 @@ namespace MicroBootstrap.RabbitMq
                 //service locator
                 var commandHandler = _serviceProvider.GetService<ICommandHandler<TCommand>>();
 
-                return await TryHandleAsync(command, correlationContext,
-                    () => commandHandler.HandleAsync(command, correlationContext), onError);
+                var accessor = _serviceProvider.GetService<ICorrelationContextAccessor>();
+                accessor.CorrelationContext = correlationContext;
+
+                return await TryHandleAsync(command, correlationContext, () => commandHandler.HandleAsync(command), onError);
             });
 
             return this;
@@ -64,8 +66,7 @@ namespace MicroBootstrap.RabbitMq
                 //  //service locator
                 var eventHandler = _serviceProvider.GetService<IEventHandler<TEvent>>();
 
-                return await TryHandleAsync(@event, correlationContext,
-                    () => eventHandler.HandleAsync(@event, correlationContext), onError);
+                return await TryHandleAsync(@event, correlationContext, () => eventHandler.HandleAsync(@event), onError);
             });
 
             return this;

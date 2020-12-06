@@ -28,20 +28,20 @@ namespace MicroBootstrap.Logging.CQRS.Decorators
         }
 
 
-        public async Task HandleAsync(TCommand command, ICorrelationContext context)
+        public async Task HandleAsync(TCommand command)
         {
             var template = _mapper.Map(command);
 
             if (template is null)
             {
-                await _handler.HandleAsync(command, context);
+                await _handler.HandleAsync(command);
                 return;
             }
 
             try
             {
                 Log(command, template.Before);
-                await _handler.HandleAsync(command, context);
+                await _handler.HandleAsync(command);
                 Log(command, template.After);
             }
             catch (Exception ex)
