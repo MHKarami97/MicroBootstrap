@@ -1,4 +1,4 @@
-name: publish 
+name: publish samples
 
 on:
   push:
@@ -51,7 +51,6 @@ jobs:
         Branch_Name: ${{ env.GITHUB_REF_SLUG }}
         Github_ID: ${{ env.Github_ID }}
       run: |
-       sh ./scripts/dotnet-build-micro-bootstrap.sh
        sh ./scripts/dotnet-build-event-processcor-service.sh
        sh ./scripts/dotnet-build-messaging-service.sh
        sh ./scripts/dotnet-build-api-gateway.sh
@@ -66,10 +65,6 @@ jobs:
         Branch_Name: ${{ env.GITHUB_REF_SLUG }}
         Github_ID: ${{ env.Github_ID }}
       run: |
-       sh ./scripts/dotnet-pack-micro-bootstrap.sh
        sh ./scripts/dotnet-publish-event-processcor-service.sh
        sh ./scripts/dotnet-publish-api-gateway.sh
        sh ./scripts/dotnet-publish-messaging-service.sh
-       sh ./scripts/docker-publish-event-processor-service.sh
-       sh ./scripts/docker-publish-messaging-service.sh
-       sh ./scripts/docker-publish-api-gateway.sh
