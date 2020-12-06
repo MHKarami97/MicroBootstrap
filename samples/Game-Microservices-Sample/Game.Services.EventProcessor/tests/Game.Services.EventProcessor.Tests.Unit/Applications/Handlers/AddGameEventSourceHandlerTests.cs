@@ -31,13 +31,13 @@ namespace Game.Services.EventProcessor.Tests.Unit.Applications.Handlers
         }
         #endregion
 
-        private Task Act(AddGameEventSource command) => _handler.HandleAsync(command, CorrelationContext.FromId(command.Id));
+        private Task Act(AddGameEventSource command) => _handler.HandleAsync(command);
 
         [Fact]
         public async Task add_game_event_source_with_existing_id_should_throw_an_exception()
         {
             //Arrange
-            var command = new AddGameEventSource(Guid.NewGuid(), 10, true);
+            var command = new AddGameEventSource(Guid.NewGuid(), 10, true, Guid.NewGuid());
             _gameEventSourceRepository.ExistsAsync(command.Id).Returns(true);
 
             //Act
@@ -52,13 +52,13 @@ namespace Game.Services.EventProcessor.Tests.Unit.Applications.Handlers
         public async Task add_game_event_with_valid_id_should_create_a_new_game_event_source()
         {
             //Arrange
-            var command = new AddGameEventSource(Guid.NewGuid(), 10, true);
+            var command = new AddGameEventSource(Guid.NewGuid(), 10, true, Guid.NewGuid());
             var gameEventSource = new GameEventSource(command.Id, command.IsWin, command.Score);
             _gameEventSourceRepository.GetAsync(command.Id).Returns(gameEventSource);
 
             //Act
             await Act(command);
-            
+
             //Assert
             await _gameEventSourceRepository.Received().AddAsync(Arg.Is<GameEventSource>(gameEvent => gameEvent.Id == gameEventSource.Id));
             var gameEvent = new GameEventSourceAdded(command.Id, command.Score, command.IsWin);

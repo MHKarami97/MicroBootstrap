@@ -20,7 +20,7 @@ namespace Game.Services.EventProcessor.Tests.Integration.Async
         [Fact] //problem with rabbitmq queue  //http://localhost:15672
         public async Task add_game_event_source_command_should_add_document_with_given_id_to_database()
         {
-            var command = new AddGameEventSource(Guid.NewGuid(), 10, true);
+            var command = new AddGameEventSource(Guid.NewGuid(), 10, true, Guid.NewGuid());
 
             //we have 2 scenario here:
 
