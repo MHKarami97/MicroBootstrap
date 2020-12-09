@@ -2,19 +2,23 @@ using System.Threading.Tasks;
 using Autofac;
 using MicroBootstrap.Messages;
 using MicroBootstrap.RabbitMq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroBootstrap.Commands.Dispatchers
 {
     public class InMememoryCommandDispatcher : ICommandDispatcher
     {
-        private readonly IComponentContext _context;
+        private readonly IServiceScopeFactory _serviceFactory;
 
-        public InMememoryCommandDispatcher(IComponentContext context)
+        public InMememoryCommandDispatcher(IServiceScopeFactory serviceFactory)
         {
-            _context = context;
+            _serviceFactory = serviceFactory;
         }
-
-        public async Task SendAsync<T>(T command) where T : ICommand
-            => await _context.Resolve<ICommandHandler<T>>().HandleAsync(command);
+        public async Task SendAsync<T>(T command) where T : class, ICommand
+        {
+            using var scope = _serviceFactory.CreateScope();
+            var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<T>>();
+            await handler.HandleAsync(command);
+        }
     }
 }
