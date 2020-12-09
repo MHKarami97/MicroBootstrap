@@ -10,6 +10,7 @@ MicroBootstrap is a framework for quickly and conveniently creating microservice
 [![Actions Status](https://github.com/mehdihadeli/MicroBootstrap/workflows/publish/badge.svg?branch=develop)](https://github.com/mehdihadeli/MicroBootstrap/actions)
  
 <a href="https://www.nuget.org/packages/MicroBootstrap/" alt="nuget package"><img src="https://img.shields.io/nuget/vpre/microbootstrap" /></a>
+![Nuget](https://img.shields.io/nuget/dt/microbootstrap?color=blue&label=nuget%20downloads)
 
 In [samples](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples) folder I've put some microservices sample that used this infrastructure for better understanding.
 
