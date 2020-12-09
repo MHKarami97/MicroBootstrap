@@ -13,6 +13,7 @@ namespace MicroBootstrap.Queries.Dispatchers
 
         public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
         {
+            // https://www.blog.jamesmichaelhickey.com/NET-Core-Dependency-Injection/
             using var scope = _serviceFactory.CreateScope();
             var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
             dynamic handler = scope.ServiceProvider.GetRequiredService(handlerType);

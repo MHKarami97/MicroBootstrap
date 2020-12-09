@@ -16,6 +16,7 @@ namespace MicroBootstrap.Commands.Dispatchers
         }
         public async Task SendAsync<T>(T command) where T : class, ICommand
         {
+            // https://www.blog.jamesmichaelhickey.com/NET-Core-Dependency-Injection/
             using var scope = _serviceFactory.CreateScope();
             var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<T>>();
             await handler.HandleAsync(command);
