@@ -23,7 +23,7 @@ namespace Game.Services.Messaging.API.Controller
         protected async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
             => await _queryDispatcher.QueryAsync<TResult>(query);
 
-        protected async Task SendAsync<TCommand>(TCommand command) where TCommand : ICommand
+        protected async Task SendAsync<TCommand>(TCommand command)  where TCommand : class, ICommand
             => await _commandDispatcher.SendAsync(command);
 
         protected ActionResult<T> Single<T>(T data)
