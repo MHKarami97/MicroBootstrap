@@ -65,7 +65,9 @@ namespace MicroBootstrap.RabbitMq
             {
                 serviceCollection.AddSingleton<IMessageProcessor, EmptyMessageProcessor>();
             }
-
+            
+            serviceCollection.AddSingleton<ICorrelationContextAccessor>(new CorrelationContextAccessor());
+            
             ConfigureBus(serviceCollection, plugins);
 
             return serviceCollection;

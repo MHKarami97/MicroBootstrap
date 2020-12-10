@@ -1,5 +1,5 @@
-@apiUrl = http://api:7000
-@gameEventSourceId = d04ec35e-9e7e-4033-9fa6-76679671d1b3
+@apiUrl = http://localhost:7001
+@gameEventSourceId = d04ec35e-9e7e-4033-9fa6-76979671s1b6
 
 # ================= API GATEWAY ======================= #
 
