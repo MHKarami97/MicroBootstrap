@@ -11,6 +11,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Game.Services.EventProcessor.Application;
 using Game.Services.EventProcessor.Infrastructure;
+using MicroBootstrap.WebApi.CQRS;
+using Game.Services.EventProcessor.Core.Messages.Commands;
+using Microsoft.AspNetCore.Mvc;
+using Game.Services.EventProcessor.Core.Messages.Queries;
+using MicroBootstrap.Queries;
+using Game.Services.EventProcessor.Core.DTO;
 
 namespace Game.Services.EventProcessor.API
 {
@@ -78,20 +84,27 @@ namespace Game.Services.EventProcessor.API
             // app.UseAccessTokenValidator();
             app.UseServiceId();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapDefaultControllerRoute();
-                endpoints.MapGet("/", async context =>
-                         await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
-                endpoints.MapHealthChecks("/healthz");
-            });
+            app.UseDispatcherEndpoints(endpoints => endpoints
+                         .Get("/", async context =>
+                           await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name))
+                         .Get<GetGameEventSource, GameEventSourceDto>("game-event-sources/{id}")
+                         .Get<BrowseGameEventSource, PagedResult<GameEventSourceDto>>("game-event-sources")
+                         .Post<AddGameEventSource>("game-event-sources"));
+                         
+            // app.UseEndpoints(endpoints =>
+            // {
+            //     endpoints.MapDefaultControllerRoute();
+            //     endpoints.MapGet("/", async context =>
+            //              await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
+            //     endpoints.MapHealthChecks("/healthz");
+            // });
 
             app.UseAllForwardedHeaders();
             app.UseErrorHandler();
             app.UseSwaggerDocs();
             applicationLifetime.ApplicationStopped.Register(() =>
             {
-              
+
             });
         }
 
