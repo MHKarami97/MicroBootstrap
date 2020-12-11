@@ -85,12 +85,11 @@ namespace Game.Services.EventProcessor.API
             app.UseServiceId();
 
             app.UseDispatcherEndpoints(endpoints => endpoints
-                         .Get("/", async context =>
-                           await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name))
+                         .Get("/", async context => await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name))
                          .Get<GetGameEventSource, GameEventSourceDto>("game-event-sources/{id}")
                          .Get<BrowseGameEventSource, PagedResult<GameEventSourceDto>>("game-event-sources")
-                         .Post<AddGameEventSource>("game-event-sources"));
-                         
+                         .Post<AddGameEventSource>("game-event-sources", afterDispatch: (cmd, ctx) => ctx.Response.Created($"game-event-sources/{cmd.Id}")) );
+
             // app.UseEndpoints(endpoints =>
             // {
             //     endpoints.MapDefaultControllerRoute();
