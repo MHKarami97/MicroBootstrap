@@ -17,6 +17,7 @@ using MicroBootstrap.Metrics;
 using Microsoft.Extensions.DependencyInjection;
 using Game.Services.EventProcessor.Infrastructure.Mongo.Repositories;
 using Game.Services.EventProcessor.Core.Repositories;
+using MicroBootstrap.Queries;
 
 namespace Game.Services.EventProcessor.Infrastructure
 {
@@ -27,6 +28,8 @@ namespace Game.Services.EventProcessor.Infrastructure
             serviceCollection.AddTransient<IGameEventSourceRepository, GameEventSourceMongoRepository>();
 
             return serviceCollection
+                .AddQueryHandlers()
+                .AddInMemoryQueryDispatcher()
                 .AddHttpClient()
                 .AddConsul()
                 .AddFabio()

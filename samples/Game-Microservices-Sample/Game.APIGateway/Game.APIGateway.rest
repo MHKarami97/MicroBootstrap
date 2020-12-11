@@ -1,5 +1,5 @@
 @apiUrl = http://localhost:7001
-@gameEventSourceId = d04ec35e-9e7e-4033-9fa6-76979671s1b6
+@gameEventSourceId = be510a3a-8e08-4c0f-a006-bb8d99c435fc
 
 # ================= API GATEWAY ======================= #
 
@@ -16,7 +16,7 @@ content-type: application/json
 {	
 	"isWin": true,
 	"score": 120,
-	"userId":"f83dcc7e-e5b3-4ae6-9cf9-f0f76b865146"
+	"userId":"f83dcc7e-e5b3-4ae6-9cf9-f0f76b865145"
 }
 
 

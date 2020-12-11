@@ -1,12 +1,9 @@
 using System.Threading.Tasks;
-using Autofac;
-using MicroBootstrap.Messages;
-using MicroBootstrap.RabbitMq;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroBootstrap.Commands.Dispatchers
 {
-    public class InMememoryCommandDispatcher : ICommandDispatcher
+    internal class InMememoryCommandDispatcher : ICommandDispatcher
     {
         private readonly IServiceScopeFactory _serviceFactory;
 

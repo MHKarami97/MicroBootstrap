@@ -9,7 +9,7 @@ using Game.Services.Messaging.Core.Entities;
 using System.Linq;
 using Game.Services.Messaging.Core.DTO;
 
-namespace Game.Services.Messaging.Application.Handlers.Events
+namespace Game.Services.Messaging.Application.Events.Handlers
 {
     public class GameEventSourceAddedHandler : IEventHandler<GameEventSourceAdded>
     {

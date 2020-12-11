@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Game.Services.EventProcessor.Core\Game.Services.EventProcessor.Core.csproj" />
     <ProjectReference Include="..\Game.Services.EventProcessor.Application\Game.Services.EventProcessor.Application.csproj" />
+        <ProjectReference Include="..\Game.Services.EventProcessor.Infrastructure\Game.Services.EventProcessor.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap\MicroBootstrap.csproj" />

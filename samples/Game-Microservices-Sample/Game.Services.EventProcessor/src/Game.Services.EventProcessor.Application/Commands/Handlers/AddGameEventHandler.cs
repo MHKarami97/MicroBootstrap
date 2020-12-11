@@ -8,9 +8,9 @@ using Microsoft.Extensions.Logging;
 using MicroBootstrap.Commands;
 using Game.Services.EventProcessor.Application.Exceptions;
 
-namespace Game.Services.EventProcessor.Application.Handlers.Commands
+namespace Game.Services.EventProcessor.Application.Commands.Handlers
 {
-    public class AddGameEventHandler : ICommandHandler<AddGameEventSource>
+    internal sealed class AddGameEventHandler : ICommandHandler<AddGameEventSource>
     {
         private readonly IGameEventSourceRepository _gameSourceRepository;
         private readonly IBusPublisher _busPublisher;

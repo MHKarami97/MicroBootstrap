@@ -1,5 +1,3 @@
-using MicroBootstrap.RabbitMq;
-using MicroBootstrap.Messages;
 using System.Threading.Tasks;
 
 namespace MicroBootstrap.Commands

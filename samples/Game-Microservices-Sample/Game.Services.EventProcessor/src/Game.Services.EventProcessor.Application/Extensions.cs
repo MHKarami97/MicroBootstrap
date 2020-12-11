@@ -11,11 +11,9 @@ namespace Game.Services.EventProcessor.Application
         {
             serviceCollection
                 .AddCommandHandlers()
-                .AddEventHandlers()
                 .AddInMemoryCommandDispatcher()
-                .AddInMemoryEventDispatcher()
-                .AddQueryHandlers()
-                .AddInMemoryQueryDispatcher();
+                .AddEventHandlers()
+                .AddInMemoryEventDispatcher();
             return serviceCollection;
         }
     }

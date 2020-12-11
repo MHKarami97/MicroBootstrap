@@ -11,8 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Game.Services.EventProcessor.Application;
 using Game.Services.EventProcessor.Infrastructure;
-using MicroBootstrap.Commands;
-using Game.Services.EventProcessor.Core.Messages.Commands;
 
 namespace Game.Services.EventProcessor.API
 {
@@ -24,7 +22,7 @@ namespace Game.Services.EventProcessor.API
         }
         private static readonly string[] Headers = new[] { "X-Operation", "X-Resource", "X-Total-Count" };
 
-        public ILifetimeScope AutofacContainer { get; private set; }
+        // public ILifetimeScope AutofacContainer { get; private set; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -35,8 +33,8 @@ namespace Game.Services.EventProcessor.API
             services.AddSwaggerDocs();
             //services.AddJwt();
 
-            services.AddInfrastructure();
             services.AddApplication();
+            services.AddInfrastructure();
             //RestEase Services
             services.AddCors(options =>
             {
@@ -57,10 +55,10 @@ namespace Game.Services.EventProcessor.API
         // with Autofac. This runs after ConfigureServices so the things
         // here will override registrations made in ConfigureServices.
         // Don't build the container; that gets done for you by the factory.
-        public void ConfigureContainer(ContainerBuilder builder)
-        {
-            // Register your own things directly with Autofac
-        }
+        // public void ConfigureContainer(ContainerBuilder builder)
+        // {
+        //     // Register your own things directly with Autofac
+        // }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime)
         {
@@ -93,7 +91,7 @@ namespace Game.Services.EventProcessor.API
             app.UseSwaggerDocs();
             applicationLifetime.ApplicationStopped.Register(() =>
             {
-                AutofacContainer.Dispose();
+              
             });
         }
 
