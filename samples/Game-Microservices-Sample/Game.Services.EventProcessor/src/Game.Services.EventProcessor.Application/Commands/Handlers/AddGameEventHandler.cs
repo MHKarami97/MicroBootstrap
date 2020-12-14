@@ -34,7 +34,7 @@ namespace Game.Services.EventProcessor.Application.Commands.Handlers
             var gameSource = new GameEventSource(command.Id, command.IsWin, command.Score);
             await _gameSourceRepository.AddAsync(gameSource);
 
-            await _busPublisher.PublishAsync(new GameEventSourceAdded(command.Id, command.Score, command.IsWin), CorrelationContext.FromId(gameSource.Id));
+            await _busPublisher.PublishAsync(new GameEventSourceAdded(command.Id, command.Score, command.IsWin, command.UserId), CorrelationContext.FromId(gameSource.Id));
         }
     }
 }

@@ -11,13 +11,15 @@ namespace Game.Services.EventProcessor.Core.Messages.Events
         public Guid Id { get; }
         public int Score { get; }
         public bool IsWin { get; }
+        public Guid UserId { get; }
 
         [JsonConstructor]
-        public GameEventSourceAdded(Guid id, int score, bool isWin)
+        public GameEventSourceAdded(Guid id, int score, bool isWin, Guid userId)
         {
             Id = id;
             Score = score;
             IsWin = isWin;
+            UserId = userId;
         }
     }
 }

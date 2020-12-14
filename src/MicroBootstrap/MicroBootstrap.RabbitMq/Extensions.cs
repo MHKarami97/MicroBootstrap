@@ -65,9 +65,9 @@ namespace MicroBootstrap.RabbitMq
             {
                 serviceCollection.AddSingleton<IMessageProcessor, EmptyMessageProcessor>();
             }
-            
+
             serviceCollection.AddSingleton<ICorrelationContextAccessor>(new CorrelationContextAccessor());
-            
+
             ConfigureBus(serviceCollection, plugins);
 
             return serviceCollection;
@@ -89,8 +89,8 @@ namespace MicroBootstrap.RabbitMq
                 var configuration = serviceProvider.GetService<RawRabbitConfiguration>();
                 var namingConventions = new CustomNamingConventions(options);
                 var register = plugins?.Invoke(new RabbitMqPluginRegister(serviceProvider));
-
-                return RawRabbitFactory.CreateInstanceFactory(new RawRabbitOptions
+             
+                var factory = RawRabbitFactory.CreateInstanceFactory(new RawRabbitOptions
                 {
                     DependencyInjection = ioc =>
                     {
@@ -114,7 +114,9 @@ namespace MicroBootstrap.RabbitMq
                         }
                     }
                 });
+                return factory;
             });
+            
             serviceCollection.AddTransient(context => context.GetService<IInstanceFactory>().Create());
         }
 
