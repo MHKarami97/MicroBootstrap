@@ -1,6 +1,4 @@
 using System.Threading.Tasks;
-using MicroBootstrap.Messages;
-using MicroBootstrap.RabbitMq;
 
 namespace MicroBootstrap.Events.Dispatchers
 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers
 {
     public class MessageProperties : IMessageProperties
     {

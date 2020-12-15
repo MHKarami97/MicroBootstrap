@@ -3,7 +3,7 @@ using System.Reflection;
 using MicroBootstrap.Messages;
 using RawRabbit.Common;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMq
 {
     internal sealed class CustomNamingConventions : NamingConventions
     {

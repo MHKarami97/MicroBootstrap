@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using RawRabbit.Configuration;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMq
 {
     public class RabbitMqOptions : RawRabbitConfiguration
     {

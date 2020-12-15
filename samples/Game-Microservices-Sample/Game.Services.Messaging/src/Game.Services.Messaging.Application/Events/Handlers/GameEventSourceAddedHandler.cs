@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using MicroBootstrap.RabbitMq;
 using Game.Services.Messaging.Core.Messages.Events;
 using Game.Services.Messaging.Core.Services;
 using MicroBootstrap.Events;

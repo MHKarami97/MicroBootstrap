@@ -1,7 +1,7 @@
 
 using System.Threading.Tasks;
 
-namespace MicroBootstrap.RabbitMq.Processors
+namespace MicroBootstrap.MessageBrokers.RabbitMq.Processors
 {
     internal class EmptyMessageProcessor : IMessageProcessor
     {

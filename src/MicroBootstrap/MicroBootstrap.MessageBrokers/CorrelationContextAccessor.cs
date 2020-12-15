@@ -1,6 +1,6 @@
 using System.Threading;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers
 {
     public class CorrelationContextAccessor : ICorrelationContextAccessor
     {

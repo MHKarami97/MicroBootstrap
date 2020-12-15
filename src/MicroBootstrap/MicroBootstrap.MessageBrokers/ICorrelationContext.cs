@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers
 {
     public interface ICorrelationContext
     {

@@ -1,6 +1,4 @@
-using MicroBootstrap.RabbitMq;
 using Microsoft.AspNetCore.Mvc;
-using OpenTracing;
 
 namespace Game.API.Controllers
 {

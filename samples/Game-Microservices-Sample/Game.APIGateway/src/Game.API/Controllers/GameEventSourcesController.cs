@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using MicroBootstrap.Queries;
-using MicroBootstrap.RabbitMq;
-using MicroBootstrap.Types;
 using MicroBootstrap.WebApi;
 using Game.API.DTO;
 using Game.API.Messages.Commands;
@@ -11,6 +9,7 @@ using Game.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
+using MicroBootstrap.MessageBrokers;
 
 namespace Game.API.Controllers
 {

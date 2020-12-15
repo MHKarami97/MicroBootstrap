@@ -1,4 +1,3 @@
-using MicroBootstrap.RabbitMq;
 using System.Threading.Tasks;
 
 namespace MicroBootstrap.Events

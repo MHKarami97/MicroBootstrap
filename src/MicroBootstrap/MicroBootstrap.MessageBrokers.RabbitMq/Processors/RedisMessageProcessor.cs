@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 
-namespace MicroBootstrap.RabbitMq.Processors
+namespace MicroBootstrap.MessageBrokers.RabbitMq.Processors
 {
     internal sealed class RedisMessageProcessor : IMessageProcessor
     {

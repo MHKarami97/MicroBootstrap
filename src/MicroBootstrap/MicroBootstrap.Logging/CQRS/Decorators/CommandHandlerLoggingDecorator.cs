@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using MicroBootstrap.Commands;
-using MicroBootstrap.Logging.CQRS;
-using MicroBootstrap.RabbitMq;
 using MicroBootstrap.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

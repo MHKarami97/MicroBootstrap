@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using MicroBootstrap.RabbitMq;
 using Game.Services.EventProcessor.Core.Entities;
 using Game.Services.EventProcessor.Core.Messages.Commands;
 using Game.Services.EventProcessor.Core.Messages.Events;
@@ -7,6 +6,8 @@ using Game.Services.EventProcessor.Core.Repositories;
 using Microsoft.Extensions.Logging;
 using MicroBootstrap.Commands;
 using Game.Services.EventProcessor.Application.Exceptions;
+using MicroBootstrap.MessageBrokers;
+using MicroBootstrap.MessageBrokers.RabbitMq;
 
 namespace Game.Services.EventProcessor.Application.Commands.Handlers
 {

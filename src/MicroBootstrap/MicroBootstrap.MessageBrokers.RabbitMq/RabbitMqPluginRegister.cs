@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using RawRabbit.DependencyInjection;
 using RawRabbit.Instantiation;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMq
 {
     internal sealed class RabbitMqPluginRegister : IRabbitMqPluginRegister
     {

@@ -1,4 +1,4 @@
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers
 {
     public interface IMessagePropertiesAccessor
     {

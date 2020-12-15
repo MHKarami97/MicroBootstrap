@@ -1,6 +1,6 @@
 using System;
-using MicroBootstrap.MessageBrokers.RabbitMQ;
-using MicroBootstrap.RabbitMq.Processors;
+using MicMicroBootstrap.MessageBrokers.RabbitMq;
+using MicroBootstrap.MessageBrokers.RabbitMq.Processors;
 using MicroBootstrap.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +10,7 @@ using RawRabbit.Configuration;
 using RawRabbit.Enrichers.MessageContext;
 using RawRabbit.Instantiation;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMq
 {
     public static class Extensions
     {

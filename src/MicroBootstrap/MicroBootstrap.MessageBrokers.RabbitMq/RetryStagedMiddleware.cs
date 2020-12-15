@@ -4,7 +4,7 @@ using RawRabbit.Common;
 using RawRabbit.Pipe;
 using RawRabbit.Pipe.Middleware;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMq
 {
     internal class RetryStagedMiddleware : StagedMiddleware
     {

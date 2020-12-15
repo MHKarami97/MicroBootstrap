@@ -1,9 +1,6 @@
-using System.Reflection;
 using Autofac;
-using MicroBootstrap.Authentication;
 using MicroBootstrap.Consul;
 using MicroBootstrap.Jaeger;
-using MicroBootstrap.RabbitMq;
 using MicroBootstrap.Redis;
 using MicroBootstrap.WebApi;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +15,7 @@ using Game.API.Services;
 using MicroBootstrap.Swagger;
 using MicroBootstrap;
 using Consul;
+using MicroBootstrap.MessageBrokers.RabbitMq;
 
 namespace Game.API
 {

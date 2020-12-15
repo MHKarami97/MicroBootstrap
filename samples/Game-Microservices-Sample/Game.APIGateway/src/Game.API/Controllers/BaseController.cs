@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using MicroBootstrap.Commands;
+using MicroBootstrap.MessageBrokers;
 using MicroBootstrap.Queries;
-using MicroBootstrap.RabbitMq;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
+using MicroBootstrap.MessageBrokers.RabbitMq;
 
 namespace Game.API.Controllers
 {
@@ -79,7 +80,7 @@ namespace Game.API.Controllers
         }
 
         protected async Task<IActionResult> SendAsync<T>(T command,
-            Guid? resourceId = null, string resource = "") where T : ICommand
+            Guid? resourceId = null, string resource = "") where T : class, ICommand
         {
             var context = GetContext<T>(resourceId, resource);
             await _busPublisher.SendAsync(command, context);

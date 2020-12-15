@@ -1,7 +1,6 @@
 using MicroBootstrap.Consul;
 using MicroBootstrap.Fabio;
 using MicroBootstrap.WebApi;
-using MicroBootstrap.RabbitMq;
 using Microsoft.AspNetCore.Builder;
 using MicroBootstrap.Mongo;
 using MicroBootstrap.Redis;
@@ -18,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Game.Services.EventProcessor.Infrastructure.Mongo.Repositories;
 using Game.Services.EventProcessor.Core.Repositories;
 using MicroBootstrap.Queries;
+using MicroBootstrap.MessageBrokers.RabbitMq;
+using MicroBootstrap.MessageBrokers;
 
 namespace Game.Services.EventProcessor.Infrastructure
 {
@@ -53,12 +54,7 @@ namespace Game.Services.EventProcessor.Infrastructure
                  .UseJaeger()
                  .UseAppMetrics()
                  .UseRabbitMq()
-                     .SubscribeCommand<AddGameEventSource>(onError: (c, e) =>
-                           new AddGameEventSourceRejected(c.Id, e.Message, e.Code));
-            // .SubscribeCommand<UpdateGameEventSource>(onError: (c, e) =>
-            //     new UpdateGameEventSourceRejected(c.Id, e.Message, e.Code))
-            // .SubscribeCommand<DeleteGameEventSource>(onError: (c, e) =>
-            //     new DeleteGameEventSourceRejected(c.Id, e.Message, e.Code))
+                     .SubscribeCommand<AddGameEventSource>();
 
 
             var consulServiceId = app.UseConsul();

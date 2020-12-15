@@ -1,7 +1,6 @@
 using MicroBootstrap.Consul;
 using MicroBootstrap.Fabio;
 using MicroBootstrap.WebApi;
-using MicroBootstrap.RabbitMq;
 using Microsoft.AspNetCore.Builder;
 using MicroBootstrap.Mongo;
 using MicroBootstrap.Redis;
@@ -16,6 +15,8 @@ using Game.Services.Messaging.Core.Messages.Events;
 using Game.Services.Messaging.Core.Entities;
 using Game.Services.Messaging.Infrastructure.Mongo.Repositories;
 using Game.Services.Messaging.Core.Repositories;
+using MicroBootstrap.MessageBrokers.RabbitMq;
+using MicroBootstrap.MessageBrokers;
 
 namespace Game.Services.Messaging.Infrastructure
 {

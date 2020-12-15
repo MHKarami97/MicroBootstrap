@@ -1,7 +1,8 @@
 ﻿using System;
+using MicroBootstrap.MessageBrokers;
 using Newtonsoft.Json;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMq
 {
     public class CorrelationContext : ICorrelationContext
     {

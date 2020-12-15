@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace MicroBootstrap.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMq
 {
     public interface IMessageProcessor
     {
