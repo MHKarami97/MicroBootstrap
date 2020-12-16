@@ -1,6 +1,6 @@
 using System;
-using MicMicroBootstrap.MessageBrokers.RabbitMq;
-using MicroBootstrap.MessageBrokers.RabbitMq.Processors;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
+using MicroBootstrap.MessageBrokers.RabbitMQ.Processors;
 using MicroBootstrap.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,11 +10,11 @@ using RawRabbit.Configuration;
 using RawRabbit.Enrichers.MessageContext;
 using RawRabbit.Instantiation;
 
-namespace MicroBootstrap.MessageBrokers.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMQ
 {
     public static class Extensions
     {
-        public static IBusSubscriber UseRabbitMq(this IApplicationBuilder app)
+        public static IBusSubscriber UseRabbitMQ(this IApplicationBuilder app)
             => new BusSubscriber(app);
 
         private const string SectionName = "rabbitMq";
@@ -23,7 +23,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMq
         internal static string GetMessageName(this object message)
             => message.GetType().Name.ToSnakeCase().ToLowerInvariant();
 
-        public static IServiceCollection AddRabbitMq(this IServiceCollection serviceCollection,
+        public static IServiceCollection AddRabbitMQ(this IServiceCollection serviceCollection,
             string sectionName = SectionName,
             string redisSectionName = "redis",
             Func<IRabbitMqPluginRegister, IRabbitMqPluginRegister> plugins = null)
@@ -35,11 +35,11 @@ namespace MicroBootstrap.MessageBrokers.RabbitMq
 
             var options = serviceCollection.GetOptions<RabbitMqOptions>(sectionName);
             var redisOptions = serviceCollection.GetOptions<RedisOptions>(redisSectionName);
-            return AddRabbitMq(serviceCollection, options, plugins,
+            return AddRabbitMQ(serviceCollection, options, plugins,
                 b => serviceCollection.AddRedis().AddRedis(redisOptions ?? new RedisOptions()));
         }
 
-        public static IServiceCollection AddRabbitMq(this IServiceCollection serviceCollection,
+        public static IServiceCollection AddRabbitMQ(this IServiceCollection serviceCollection,
             RabbitMqOptions options,
             Func<IRabbitMqPluginRegister, IRabbitMqPluginRegister> plugins,
             Action<IServiceCollection> registerRedis)

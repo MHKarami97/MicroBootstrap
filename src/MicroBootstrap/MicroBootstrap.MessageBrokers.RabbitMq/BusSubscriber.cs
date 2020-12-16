@@ -10,7 +10,7 @@ using RawRabbit;
 using RawRabbit.Common;
 using RawRabbit.Enrichers.MessageContext;
 
-namespace MicroBootstrap.MessageBrokers.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMQ
 {
     public class BusSubscriber : IBusSubscriber
     {

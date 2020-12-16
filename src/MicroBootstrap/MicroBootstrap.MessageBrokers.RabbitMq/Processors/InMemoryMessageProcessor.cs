@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace MicroBootstrap.MessageBrokers.RabbitMq.Processors
+namespace MicroBootstrap.MessageBrokers.RabbitMQ.Processors
 {
     public class InMemoryMessageProcessor : IMessageProcessor
     {

@@ -15,7 +15,7 @@ using Game.API.Services;
 using MicroBootstrap.Swagger;
 using MicroBootstrap;
 using Consul;
-using MicroBootstrap.MessageBrokers.RabbitMq;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
 
 namespace Game.API
 {
@@ -45,7 +45,7 @@ namespace Game.API
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();
-            services.AddRabbitMq();
+            services.AddRabbitMQ();
             // services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
             services.AddCors(options =>
             {
@@ -99,7 +99,7 @@ namespace Game.API
                      await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
             }
         );
-            app.UseRabbitMq();
+            app.UseRabbitMQ();
             var consulServiceId = app.UseConsul();
             applicationLifetime.ApplicationStopped.Register(() =>
             {

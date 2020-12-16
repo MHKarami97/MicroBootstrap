@@ -4,7 +4,7 @@ using MicroBootstrap.MessageBrokers;
 using RawRabbit;
 using RawRabbit.Enrichers.MessageContext;
 
-namespace MicroBootstrap.MessageBrokers.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMQ
 {
     public class BusPublisher : IBusPublisher
     {

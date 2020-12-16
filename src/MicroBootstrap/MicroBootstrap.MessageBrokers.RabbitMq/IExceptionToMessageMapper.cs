@@ -1,6 +1,6 @@
 using System;
 
-namespace MicroBootstrap.MessageBrokers.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMQ
 {
     public interface IExceptionToMessageMapper
     {

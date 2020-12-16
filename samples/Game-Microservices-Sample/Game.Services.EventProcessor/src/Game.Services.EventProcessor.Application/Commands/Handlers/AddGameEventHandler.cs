@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using MicroBootstrap.Commands;
 using Game.Services.EventProcessor.Application.Exceptions;
 using MicroBootstrap.MessageBrokers;
-using MicroBootstrap.MessageBrokers.RabbitMq;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
 
 namespace Game.Services.EventProcessor.Application.Commands.Handlers
 {

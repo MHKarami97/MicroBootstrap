@@ -6,7 +6,7 @@ using MicroBootstrap.MessageBrokers;
 using MicroBootstrap.Queries;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
-using MicroBootstrap.MessageBrokers.RabbitMq;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
 
 namespace Game.API.Controllers
 {

@@ -8,7 +8,6 @@ using MicroBootstrap.Jaeger;
 using Game.Services.EventProcessor.Core.Entities;
 using System;
 using Game.Services.EventProcessor.Core.Messages.Commands;
-using Game.Services.EventProcessor.Core.Messages.Events;
 using MicroBootstrap;
 using Microsoft.Extensions.Hosting;
 using Consul;
@@ -17,8 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Game.Services.EventProcessor.Infrastructure.Mongo.Repositories;
 using Game.Services.EventProcessor.Core.Repositories;
 using MicroBootstrap.Queries;
-using MicroBootstrap.MessageBrokers.RabbitMq;
 using MicroBootstrap.MessageBrokers;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
 
 namespace Game.Services.EventProcessor.Infrastructure
 {
@@ -34,7 +33,7 @@ namespace Game.Services.EventProcessor.Infrastructure
                 .AddHttpClient()
                 .AddConsul()
                 .AddFabio()
-                .AddRabbitMq()
+                .AddRabbitMQ()
                 .AddMongo()
                 .AddRedis()
                 .AddOpenTracing()
@@ -53,7 +52,7 @@ namespace Game.Services.EventProcessor.Infrastructure
             app.UseErrorHandler()
                  .UseJaeger()
                  .UseAppMetrics()
-                 .UseRabbitMq()
+                 .UseRabbitMQ()
                      .SubscribeCommand<AddGameEventSource>();
 
 

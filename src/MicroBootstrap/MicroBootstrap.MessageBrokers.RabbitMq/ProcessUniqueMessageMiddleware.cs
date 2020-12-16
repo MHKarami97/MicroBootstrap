@@ -1,13 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MicroBootstrap.MessageBrokers.RabbitMq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RawRabbit.Pipe;
 using RawRabbit.Pipe.Middleware;
 
-namespace MicMicroBootstrap.MessageBrokers.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMQ
 {
     internal class ProcessUniqueMessagesMiddleware : StagedMiddleware
     {

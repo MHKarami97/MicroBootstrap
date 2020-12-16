@@ -15,7 +15,7 @@ using Game.Services.Messaging.Core.Messages.Events;
 using Game.Services.Messaging.Core.Entities;
 using Game.Services.Messaging.Infrastructure.Mongo.Repositories;
 using Game.Services.Messaging.Core.Repositories;
-using MicroBootstrap.MessageBrokers.RabbitMq;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
 using MicroBootstrap.MessageBrokers;
 
 namespace Game.Services.Messaging.Infrastructure
@@ -31,7 +31,7 @@ namespace Game.Services.Messaging.Infrastructure
                 .AddHttpClient()
                 .AddConsul()
                 .AddFabio()
-                .AddRabbitMq()
+                .AddRabbitMQ()
                 .AddMongo()
                 .AddRedis()
                 .AddOpenTracing()
@@ -50,7 +50,7 @@ namespace Game.Services.Messaging.Infrastructure
             app.UseErrorHandler()
                  .UseJaeger()
                  .UseAppMetrics()
-                 .UseRabbitMq().SubscribeEvent<GameEventSourceAdded>();
+                 .UseRabbitMQ().SubscribeEvent<GameEventSourceAdded>();
 
             var consulServiceId = app.UseConsul();
             applicationLifetime.ApplicationStopped.Register(() =>

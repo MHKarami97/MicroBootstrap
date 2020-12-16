@@ -2,7 +2,7 @@ using System;
 using RawRabbit.DependencyInjection;
 using RawRabbit.Instantiation;
 
-namespace MicroBootstrap.MessageBrokers.RabbitMq
+namespace MicroBootstrap.MessageBrokers.RabbitMQ
 {
     public interface IRabbitMqPluginRegister
     {
