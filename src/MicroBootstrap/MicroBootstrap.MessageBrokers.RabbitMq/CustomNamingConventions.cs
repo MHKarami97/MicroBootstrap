@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using MicroBootstrap.Messages;
 using RawRabbit.Common;
 
 namespace MicroBootstrap.MessageBrokers.RabbitMQ
@@ -44,6 +43,9 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
                 _options.Exchange.Name : type.Assembly.GetName().Name
                 : attribute.Exchange;
 
+            if (string.IsNullOrWhiteSpace(exchange))
+                throw new Exception("couldn't find exchange name from rabbitmq config or message attribute.");
+
             return ApplySnakeCasing(exchange);
         }
         public string GetQueue(Type type)
@@ -56,6 +58,10 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
             var assembly = type.Assembly.GetName().Name;
             var message = type.Name;
             var exchange = string.IsNullOrWhiteSpace(attribute?.Exchange) ? _options.Exchange.Name : attribute.Exchange;
+            
+            if (string.IsNullOrWhiteSpace(exchange))
+                throw new Exception("couldn't find exchange name from rabbitmq config or message attribute.");
+            
             var queue = _queueTemplate.Replace("{{assembly}}", assembly)
                 .Replace("{{exchange}}", exchange)
                 .Replace("{{message}}", message);

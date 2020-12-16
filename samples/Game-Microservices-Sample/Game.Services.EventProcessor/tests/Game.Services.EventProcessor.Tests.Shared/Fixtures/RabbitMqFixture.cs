@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Game.Services.EventProcessor.Tests.Shared.Helpers;
-using MicroBootstrap.RabbitMq;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;

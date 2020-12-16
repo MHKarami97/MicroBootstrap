@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using MicroBootstrap.Commands;
-using MicroBootstrap.Messages;
+using MicroBootstrap.MessageBrokers;
 
 namespace Game.Services.EventProcessor.Core.Messages.Commands
 {

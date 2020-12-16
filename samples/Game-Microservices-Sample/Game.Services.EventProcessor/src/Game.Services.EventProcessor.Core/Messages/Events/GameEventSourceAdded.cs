@@ -1,6 +1,6 @@
 using System;
 using MicroBootstrap.Events;
-using MicroBootstrap.Messages;
+using MicroBootstrap.MessageBrokers;
 using Newtonsoft.Json;
 
 namespace Game.Services.EventProcessor.Core.Messages.Events
