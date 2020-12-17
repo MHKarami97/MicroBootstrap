@@ -38,10 +38,11 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
         private string GetExchangeName(Type type)
         {
             var attribute = GeAttribute(type);
+
             var exchange = string.IsNullOrWhiteSpace(attribute?.Exchange)
-                ? string.IsNullOrWhiteSpace(_options.Exchange?.Name) ?
-                _options.Exchange.Name : type.Assembly.GetName().Name
-                : attribute.Exchange;
+                        ? string.IsNullOrWhiteSpace(_options.Exchange?.Name) ? type.Assembly.GetName().Name :
+                        _options.Exchange.Name
+                        : attribute.Exchange;
 
             if (string.IsNullOrWhiteSpace(exchange))
                 throw new Exception("couldn't find exchange name from rabbitmq config or message attribute.");
@@ -58,10 +59,10 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
             var assembly = type.Assembly.GetName().Name;
             var message = type.Name;
             var exchange = string.IsNullOrWhiteSpace(attribute?.Exchange) ? _options.Exchange.Name : attribute.Exchange;
-            
+
             if (string.IsNullOrWhiteSpace(exchange))
                 throw new Exception("couldn't find exchange name from rabbitmq config or message attribute.");
-            
+
             var queue = _queueTemplate.Replace("{{assembly}}", assembly)
                 .Replace("{{exchange}}", exchange)
                 .Replace("{{message}}", message);
