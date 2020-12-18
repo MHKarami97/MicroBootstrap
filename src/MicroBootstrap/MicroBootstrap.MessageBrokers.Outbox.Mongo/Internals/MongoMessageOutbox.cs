@@ -57,7 +57,7 @@ namespace MicroBootstrap.MessageBrokers.Outbox.Mongo.Internals
             {
                 throw new ArgumentException("Message id to be processed cannot be empty.", nameof(messageId));
             }
-
+            // unique check for our message - if messageId already processed we will not call our handler that means we will not involve our command or event handler again
             _logger.LogTrace($"Received a message with id: '{messageId}' to be processed.");
             if (await _inboxRepository.ExistsAsync(m => m.Id == messageId))
             {
@@ -66,7 +66,7 @@ namespace MicroBootstrap.MessageBrokers.Outbox.Mongo.Internals
             }
 
             IClientSessionHandle session = null;
-            if (_transactionsEnabled)
+            if (_transactionsEnabled) //important thing is here, using a transaction
             {
                 session = await _sessionFactory.CreateAsync();
                 session.StartTransaction();
@@ -75,8 +75,9 @@ namespace MicroBootstrap.MessageBrokers.Outbox.Mongo.Internals
             try
             {
                 _logger.LogTrace($"Processing a message with id: '{messageId}'...");
-                await handler();
-                await _inboxRepository.AddAsync(new InboxMessage
+                //we need to store all inbox and outbox data in same transaction and database
+                await handler(); //outbox pattern - adding outbox event to database here with doing IMessageOutbox.SendAsync in out handler
+                await _inboxRepository.AddAsync(new InboxMessage  //inbox pattern
                 {
                     Id = messageId,
                     ProcessedAt = DateTime.UtcNow

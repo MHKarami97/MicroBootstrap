@@ -102,7 +102,7 @@ namespace MicroBootstrap.MessageBrokers.Outbox.Processors
                     message.SpanContext, message.MessageContext, message.Headers);
                 if (_type == OutboxType.Sequential)
                 {
-                    await outbox.ProcessAsync(message);
+                    await outbox.ProcessAsync(message);//update our the message state to processed with its processed date
                 }
             }
 

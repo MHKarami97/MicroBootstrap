@@ -37,7 +37,7 @@ namespace MicroBootstrap.MessageBrokers.Outbox
             {
                 return services;
             }
-
+            //adding a background service for handling outbox process
             services.AddHostedService<OutboxProcessor>();
 
             return services;
