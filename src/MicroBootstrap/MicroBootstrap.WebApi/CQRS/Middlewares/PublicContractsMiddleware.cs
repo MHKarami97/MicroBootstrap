@@ -47,7 +47,7 @@ namespace MicroBootstrap.WebApi.CQRS.Middlewares
                 return;
             }
 
-            Load(attributeType); 
+            Load(attributeType);
         }
 
         public Task InvokeAsync(HttpContext context)
@@ -57,6 +57,7 @@ namespace MicroBootstrap.WebApi.CQRS.Middlewares
                 return _next(context);
             }
 
+            //will be a terminal middleware
             context.Response.ContentType = ContentType;
             context.Response.WriteAsync(_serializedContracts);
 
@@ -74,9 +75,9 @@ namespace MicroBootstrap.WebApi.CQRS.Middlewares
             var contracts = assemblies.SelectMany(a => a.GetTypes())
                 .Where(t => (!_attributeRequired || !(t.GetCustomAttribute(attributeType) is null)) && !t.IsInterface)
                 .ToArray();
-
             foreach (var command in contracts.Where(t => typeof(ICommand).IsAssignableFrom(t)))
             {
+                //https://weblogs.asp.net/ricardoperes/performance-in-net-part-1
                 var instance = FormatterServices.GetUninitializedObject(command);
                 var name = instance.GetType().Name;
                 if (Contracts.Commands.ContainsKey(name))
