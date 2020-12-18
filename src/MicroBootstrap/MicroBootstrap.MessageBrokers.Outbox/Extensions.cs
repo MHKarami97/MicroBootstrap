@@ -5,7 +5,7 @@ using MicroBootstrap.MessageBrokers.Outbox.Configurators;
 using MicroBootstrap.MessageBrokers.Outbox.Processors;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CMicroBootstrap.MessageBrokers.Outbox
+namespace MicroBootstrap.MessageBrokers.Outbox
 {
     public static class Extensions
     {
