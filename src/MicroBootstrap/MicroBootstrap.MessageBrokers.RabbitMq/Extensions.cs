@@ -67,6 +67,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
             }
 
             serviceCollection.AddSingleton<ICorrelationContextAccessor>(new CorrelationContextAccessor());
+            serviceCollection.AddSingleton<IRabbitMQSerializer>(new RabbitMQSerializer());
             serviceCollection.AddSingleton<IMessagePropertiesAccessor>(new MessagePropertiesAccessor());
 
             ConfigureBus(serviceCollection, plugins);

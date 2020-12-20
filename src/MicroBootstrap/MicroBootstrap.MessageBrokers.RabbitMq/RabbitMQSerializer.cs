@@ -4,8 +4,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace MicroBootstrap.MessageBrokers.RabbitMQ
 {
-	//https://stackoverflow.com/questions/9337255/serialize-deserialize-a-byte-array-in-json-net
-    public class RabbitMQSerializer
+
+    //https://stackoverflow.com/questions/9337255/serialize-deserialize-a-byte-array-in-json-net
+    public class RabbitMQSerializer : IRabbitMQSerializer
     {
         private readonly JsonSerializerSettings _settings;
 

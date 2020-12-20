@@ -12,6 +12,15 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
         public string ConventionsCasing { get; set; }
         public new QueueOptions Queue { get; set; }
         public new ExchangeOptions Exchange { get; set; }
+        public string SpanContextHeader { get; set; }
+        public LoggerOptions Logger { get; set; }
+
+        public class LoggerOptions
+        {
+            public bool Enabled { get; set; }
+            public string Level { get; set; }
+        }
+
         public class MessageProcessorOptions
         {
             public bool Enabled { get; set; }
@@ -31,5 +40,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
             public bool Declare { get; set; }
         }
 
+        public string GetSpanContextHeader()
+           => string.IsNullOrWhiteSpace(SpanContextHeader) ? "span_context" : SpanContextHeader;
     }
 }
