@@ -36,7 +36,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
             var options = serviceCollection.GetOptions<RabbitMqOptions>(sectionName);
             var redisOptions = serviceCollection.GetOptions<RedisOptions>(redisSectionName);
             return AddRabbitMQ(serviceCollection, options, plugins,
-                b => serviceCollection.AddRedis().AddRedis(redisOptions ?? new RedisOptions()));
+                b => serviceCollection.AddRedis(redisOptions ?? new RedisOptions()));
         }
 
         public static IServiceCollection AddRabbitMQ(this IServiceCollection serviceCollection,
@@ -46,7 +46,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
         {
             serviceCollection.AddSingleton(options);
             serviceCollection.AddSingleton<RawRabbitConfiguration>(options);
-
+            serviceCollection.AddSingleton<INamingConventions>((_) => new CustomNamingConventions(options));
             serviceCollection.AddTransient<IBusPublisher, BusPublisher>();
             if (options.MessageProcessor?.Enabled == true)
             {
@@ -89,7 +89,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
             {
                 var options = serviceProvider.GetService<RabbitMqOptions>();
                 var configuration = serviceProvider.GetService<RawRabbitConfiguration>();
-                var namingConventions = new CustomNamingConventions(options);
+                var namingConventions = serviceProvider.GetService<INamingConventions>();
                 var register = plugins?.Invoke(new RabbitMqPluginRegister(serviceProvider));
 
                 var factory = RawRabbitFactory.CreateInstanceFactory(new RawRabbitOptions

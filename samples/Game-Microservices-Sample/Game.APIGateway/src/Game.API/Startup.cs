@@ -45,7 +45,7 @@ namespace Game.API
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();
-            services.AddRabbitMQ();
+            services.AddRabbitMQ();// Rabbit will add Redis automatically if options.MessageProcessor.Type = redis
             // services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
             services.AddCors(options =>
             {

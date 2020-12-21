@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using StackExchange.Redis;
 
 namespace MicroBootstrap.Redis
@@ -16,14 +17,15 @@ namespace MicroBootstrap.Redis
         }
         public static IServiceCollection AddRedis(this IServiceCollection services, RedisOptions options)
         {
-            services.AddSingleton(options)
-           .AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect(options.ConnectionString))
-           .AddTransient(sp => sp.GetRequiredService<IConnectionMultiplexer>().GetDatabase(options.Database))
-           .AddStackExchangeRedisCache(o =>
-           {
-               o.Configuration = options.ConnectionString;
-               o.InstanceName = options.Instance;
-           });
+            services.TryAddSingleton(options);
+            services.TryAddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect(options.ConnectionString));
+            services.TryAddTransient(sp => sp.GetRequiredService<IConnectionMultiplexer>().GetDatabase(options.Database));
+
+            services.AddStackExchangeRedisCache(o =>
+            {
+                o.Configuration = options.ConnectionString;
+                o.InstanceName = options.Instance;
+            });
 
             return services;
         }
