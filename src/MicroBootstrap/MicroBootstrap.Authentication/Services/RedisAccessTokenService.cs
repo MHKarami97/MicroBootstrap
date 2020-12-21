@@ -8,13 +8,13 @@ using Microsoft.Extensions.Primitives;
 
 namespace MicroBootstrap.Authentication
 {
-    public class AccessTokenService : IAccessTokenService
+    public class RedisAccessTokenService : IAccessTokenService
     {
         private readonly IDistributedCache _cache;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IOptions<JwtOptions> _jwtOptions;
 
-        public AccessTokenService(IDistributedCache cache,
+        public RedisAccessTokenService(IDistributedCache cache,
                 IHttpContextAccessor httpContextAccessor,
                 IOptions<JwtOptions> jwtOptions)
         {

@@ -31,7 +31,7 @@ namespace MicroBootstrap.Authentication
             Action<JwtBearerOptions> optionsFactory = null)
         {
             serviceCollection.AddSingleton<IJwtHandler, JwtHandler>();
-            serviceCollection.AddSingleton<IAccessTokenService, AccessTokenService>();
+            serviceCollection.AddSingleton<IAccessTokenService, RedisAccessTokenService>();
             serviceCollection.AddTransient<AccessTokenValidatorMiddleware>();
 
             var tokenValidationParameters = new TokenValidationParameters
