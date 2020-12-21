@@ -9,6 +9,7 @@ namespace MicroBootstrap.Authentication
 {
    internal sealed class InMemoryAccessTokenService : IAccessTokenService
     {
+        //if we have one instance or host out app on one server (monolith) we can use in-memory cache
         private readonly IMemoryCache _cache;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly JwtOptions _jwtOptions;
@@ -27,7 +28,8 @@ namespace MicroBootstrap.Authentication
 
         public async Task DeactivateCurrentAsync()
             => await DeactivateAsync(GetCurrentAsync());
-
+            
+        // we keep only black list token in our redis cache, so if our token doesn't exist in cache our token is valid
         public Task<bool> IsActiveAsync(string token)
             => Task.FromResult(string.IsNullOrWhiteSpace(_cache.Get<string>(GetKey(token))));
 

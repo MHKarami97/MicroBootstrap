@@ -16,6 +16,7 @@ using MicroBootstrap.Swagger;
 using MicroBootstrap;
 using Consul;
 using MicroBootstrap.MessageBrokers.RabbitMQ;
+using MicroBootstrap.Authentication;
 
 namespace Game.API
 {
@@ -41,7 +42,7 @@ namespace Game.API
             services.AddHealthChecks();
             services.AddSwaggerDocs();
             services.AddConsul();
-            //services.AddJwt();
+            services.AddJwt();
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();
@@ -83,13 +84,14 @@ namespace Game.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseErrorHandler();
             app.UseStaticFiles();
             app.UseSwaggerDocs();
             app.UseInitializers();
             app.UseRouting();
-            app.UseErrorHandler();
-            app.UseAuthorization();
-            app.UseAuthentication();
+            app.UseAuthentication(); // Must be after UseRouting()
+            app.UseAuthorization(); // Must be after UseAuthentication()
+            app.UseAccessTokenValidator();
             app.UseServiceId();
             app.UseEndpoints(endpoints =>
             {

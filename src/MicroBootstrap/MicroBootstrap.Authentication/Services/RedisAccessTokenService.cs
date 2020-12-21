@@ -10,6 +10,7 @@ namespace MicroBootstrap.Authentication
 {
     public class RedisAccessTokenService : IAccessTokenService
     {
+        //if we have more than one instance or host our app on multiple servers, because we want access block token list on all instace and servers and we need to use distributed cache
         private readonly IDistributedCache _cache;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IOptions<JwtOptions> _jwtOptions;
@@ -29,13 +30,14 @@ namespace MicroBootstrap.Authentication
         public async Task DeactivateCurrentAsync()
             => await DeactivateAsync(GetCurrentAsync());
 
+        // we keep only black list token in our redis cache, so if our token doesn't exist in cache our token is valid
         public async Task<bool> IsActiveAsync(string token)
             => string.IsNullOrWhiteSpace(await _cache.GetStringAsync(GetKey(token)));
 
         public async Task DeactivateAsync(string token)
         {
             await _cache.SetStringAsync(GetKey(token),
-                    "deactivated", new DistributedCacheEntryOptions
+                    "revoked", new DistributedCacheEntryOptions
                     {
                         AbsoluteExpirationRelativeToNow =
                             TimeSpan.FromMinutes(_jwtOptions.Value.ExpiryMinutes)
@@ -51,8 +53,8 @@ namespace MicroBootstrap.Authentication
                 ? string.Empty
                 : authorizationHeader.Single().Split(' ').Last();
         }
-        
+
         private static string GetKey(string token)
-            => $"tokens:{token}";
+            => $"blacklisted-tokens:{token}";
     }
 }

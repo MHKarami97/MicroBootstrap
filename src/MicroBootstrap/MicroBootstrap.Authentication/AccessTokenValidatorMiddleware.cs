@@ -12,16 +12,17 @@ namespace MicroBootstrap.Authentication
         {
             _accessTokenService = accessTokenService;
         }
-        
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            if (await _accessTokenService.IsCurrentActiveToken())
+            var res = await _accessTokenService.IsCurrentActiveToken();
+            if (res)
             {
                 await next(context);
-                
+
                 return;
             }
-            context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
     }
 }
