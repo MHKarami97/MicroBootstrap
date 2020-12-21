@@ -12,7 +12,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
         public CustomNamingConventions(RabbitMqOptions options)
         {
             _options = options;
-            _queueTemplate = string.IsNullOrWhiteSpace(_options.Queue.Template)
+            _queueTemplate = string.IsNullOrWhiteSpace(_options?.Queue?.Template)
                 ? "{{assembly}}/{{exchange}}.{{message}}"
                 : options.Queue.Template;
             _snakeCase = options.ConventionsCasing == null ? true : options.ConventionsCasing?.Equals("snakeCase", StringComparison.InvariantCultureIgnoreCase) == true;
