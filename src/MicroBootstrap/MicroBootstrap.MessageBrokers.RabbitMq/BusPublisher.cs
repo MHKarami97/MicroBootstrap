@@ -29,7 +29,8 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
         //ICorrelationContext and we create this object in the begining of inside APIGateway and let it go with the
         //messages and use this ICorrelationContext class in message handlers as a second parameter
         public Task PublishAsync<T>(T message, string messageId = null, string correlationId = null,
-            string spanContext = null, object messageContext = null, IDictionary<string, object> headers = null)
+            string spanContext = null, object messageContext = null, IDictionary<string, object> headers = null,
+            IMessageConventions messageConventions = null)
             where T : class
         {
             var _spanContextHeader = _options.GetSpanContextHeader();
@@ -64,8 +65,24 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
                         properties.Headers.TryAdd(key, value);
                     }
                 }
-                var exchangeName = _conventions.ExchangeNamingConvention.Invoke(message.GetType());
-                var routingKey = _conventions.RoutingKeyConvention.Invoke(message.GetType());
+
+                string exchangeName = string.Empty;
+                string routingKey = string.Empty;
+
+                if (messageConventions is { })
+                {
+                    cfg.WithRoutingKey(messageConventions.RoutingKey);
+                    cfg.OnDeclaredExchange(x => x.WithType(RawRabbit.Configuration.Exchange.ExchangeType.Topic).WithName(messageConventions.Exchange));
+                    
+                    exchangeName = messageConventions.Exchange;
+                    routingKey = messageConventions.RoutingKey;
+                }
+                else
+                {
+                    exchangeName = _conventions.ExchangeNamingConvention.Invoke(message.GetType());
+                    routingKey = _conventions.RoutingKeyConvention.Invoke(message.GetType());
+                }
+
                 if (_loggerEnabled)
                 {
                     _logger.LogTrace($"Publishing a message with routing key: '{routingKey}' " +
