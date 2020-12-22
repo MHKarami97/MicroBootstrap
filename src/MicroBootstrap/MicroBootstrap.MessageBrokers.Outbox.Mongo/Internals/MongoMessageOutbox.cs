@@ -66,9 +66,10 @@ namespace MicroBootstrap.MessageBrokers.Outbox.Mongo.Internals
             }
 
             IClientSessionHandle session = null;
-            if (_transactionsEnabled) //important thing is here, using a transaction
+            if (_transactionsEnabled) 
             {
                 session = await _sessionFactory.CreateAsync();
+                //important thing is here, using a transaction
                 session.StartTransaction();
             }
 

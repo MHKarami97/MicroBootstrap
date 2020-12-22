@@ -34,8 +34,8 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
             where T : class
         {
             var _spanContextHeader = _options.GetSpanContextHeader();
-            var _loggerEnabled = _options.Logger?.Enabled ?? false;
-            //TODO: handle other input parameters
+            var _loggerEnabled = _options.Logger?.Enabled ?? true;
+
             return _busClient.PublishAsync(message, ctx =>
             ctx.UsePublishConfiguration(cfg => cfg.WithProperties(properties =>
             {
@@ -73,7 +73,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
                 {
                     cfg.WithRoutingKey(messageConventions.RoutingKey);
                     cfg.OnDeclaredExchange(x => x.WithType(RawRabbit.Configuration.Exchange.ExchangeType.Topic).WithName(messageConventions.Exchange));
-                    
+
                     exchangeName = messageConventions.Exchange;
                     routingKey = messageConventions.RoutingKey;
                 }
@@ -85,9 +85,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
 
                 if (_loggerEnabled)
                 {
-                    _logger.LogTrace($"Publishing a message with routing key: '{routingKey}' " +
-                                     $"to exchange: '{exchangeName}' " +
-                                     $"[id: '{properties.MessageId}', correlation id: '{properties.CorrelationId}']");
+                    _logger.LogTrace($"Publishing a message with routing key: '{routingKey}' " +$"to exchange: '{exchangeName}' " + $"[id: '{properties.MessageId}', correlation id: '{properties.CorrelationId}']");
                 }
 
             }))
