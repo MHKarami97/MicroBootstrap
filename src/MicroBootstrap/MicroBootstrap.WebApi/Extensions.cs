@@ -45,10 +45,17 @@ namespace MicroBootstrap.WebApi
             Converters = { new StringEnumConverter(new CamelCaseNamingStrategy(), true) }
         };
 
-        public static IApplicationBuilder UseApiEndpoints(this IApplicationBuilder app, Action<IEndpointsBuilder> build,
-             Action<IApplicationBuilder> middleware = null)
+        public static IApplicationBuilder UseEndpoints(this IApplicationBuilder app, Action<IEndpointsBuilder> build,
+             bool useAuthorization = true, Action<IApplicationBuilder> middleware = null)
         {
             var definitions = app.ApplicationServices.GetRequiredService<WebApiEndpointDefinitions>();
+
+            app.UseRouting();
+            if (useAuthorization)
+            {
+                app.UseAuthorization();
+            }
+
             middleware?.Invoke(app);
 
             app.UseEndpoints(router => build(new EndpointsBuilder(router, definitions)));
@@ -134,7 +141,7 @@ namespace MicroBootstrap.WebApi
         {
             serviceCollection.AddTransient<ErrorHandlerMiddleware>();
             serviceCollection.AddSingleton<IExceptionToResponseMapper, T>();
-            
+
             return serviceCollection;
         }
 
