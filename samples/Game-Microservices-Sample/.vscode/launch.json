@@ -1,0 +1,87 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Game.Services.Messaging",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "console": "externalTerminal",
+            "program": "${workspaceFolder}/Game.Services.Messaging/src/Game.Services.Messaging.API/bin/Debug/netcoreapp3.1/Game.Services.Messaging.API",
+            "args": [],
+            "cwd": "${workspaceFolder}/Game.Services.Messaging/src/Game.Services.Messaging.API",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "Game.Services.EventProcessor",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "console": "externalTerminal",
+            "program": "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API/bin/Debug/netcoreapp3.1/Game.Services.EventProcessor.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "API.Gateway",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "console": "externalTerminal",
+            "program": "${workspaceFolder}/Game.APIGateway/src/Game.API/bin/Debug/netcoreapp3.1/Game.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Game.APIGateway/src/Game.API",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickProcess}"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "APIGateway/Messaging/EventProcessor",
+            "configurations": [
+                "API.Gateway",
+                "Game.Services.EventProcessor",
+                "Game.Services.Messaging"
+            ]
+        }
+    ]
+}

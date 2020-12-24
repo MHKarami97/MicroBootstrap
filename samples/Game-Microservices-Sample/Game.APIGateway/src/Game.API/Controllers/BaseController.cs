@@ -7,6 +7,10 @@ using MicroBootstrap.Queries;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
 using MicroBootstrap.MessageBrokers.RabbitMQ;
+using Game.API.Infrastructure;
+using Game.API.Controllers.Infrastructure;
+using MicroBootstrap;
+using Newtonsoft.Json.Linq;
 
 namespace Game.API.Controllers
 {
@@ -21,11 +25,18 @@ namespace Game.API.Controllers
         private static readonly string PageLink = "page";
         private readonly IBusPublisher _busPublisher;
         private readonly ITracer _tracer;
+        private readonly ICorrelationContextBuilder _correlationContextBuilder;
+
         //inject ITracer for OpenTracer and jaeger
-        protected BaseController(IBusPublisher busPublisher, ITracer tracer)
+        public BaseController(
+          IBusPublisher busPublisher
+        , ITracer tracer
+        , ICorrelationContextBuilder correlationContextBuilder
+        )
         {
             _busPublisher = busPublisher;
             _tracer = tracer;
+            _correlationContextBuilder = correlationContextBuilder;
         }
 
         protected ActionResult Single<T>(T model, Func<T, bool> criteria = null)
@@ -79,36 +90,32 @@ namespace Game.API.Controllers
             return Ok(pagedResult.Items);
         }
 
-        protected async Task<IActionResult> SendAsync<T>(T command,
-            Guid? resourceId = null, string resource = "") where T : class, ICommand
+        protected async Task SendAsync<T>(T message) where T : class
         {
-            var context = GetContext<T>(resourceId, resource);
-            await _busPublisher.SendAsync(command, context);
+            var spanContext = _tracer.ActiveSpan is null ? string.Empty : _tracer.ActiveSpan.Context.ToString();
+            var messageId = Guid.NewGuid().ToString("N");//this is unique per message type, each message has its own messageId in rabbitmq
+            var correlationId = Guid.NewGuid().ToString("N");//unique for whole message flow , here gateway initiate our correlationId along side our newly publish message to keep track of our request
 
-            return Accepted(context);
+            var resourceId = Guid.NewGuid().ToString("N");
+            if (HttpContext.Request.Method == "POST" && message is JObject jObject)
+            {
+                jObject.SetResourceId(resourceId);
+            }
+            var correlationContext = _correlationContextBuilder.Build(HttpContext, correlationId, spanContext, message.GetType().Name.ToSnakeCase(), resourceId);
+            await _busPublisher.PublishAsync<T>(message, messageId: messageId, correlationId: correlationId, spanContext: spanContext, messageContext: correlationContext);
+            HttpContext.Response.StatusCode = 202; //we send 202 status code and a correlationId immediately to end user after we published message to the message broker 
+            HttpContext.Response.SetOperationHeader(correlationId);
         }
 
         protected ActionResult Accepted(ICorrelationContext context)
         {
-            Response.Headers.Add(OperationHeader, $"operations/{context.Id}");
+            Response.Headers.Add(OperationHeader, $"operations/{context.ConnectionId}");
             if (!string.IsNullOrWhiteSpace(context.Resource))
             {
                 Response.Headers.Add(ResourceHeader, context.Resource);
             }
 
             return base.Accepted();
-        }
-
-        protected ICorrelationContext GetContext<T>(Guid? resourceId = null, string resource = "") where T : ICommand
-        {
-            if (!string.IsNullOrWhiteSpace(resource))
-            {
-                resource = $"{resource}/{resourceId}";
-            }
-            //send SpanTracerContext of our tracer with request
-            return CorrelationContext.Create<T>(Guid.NewGuid(), UserId, resourceId ?? Guid.Empty,
-               HttpContext.TraceIdentifier, HttpContext.Connection.Id, _tracer.ActiveSpan.Context.ToString(),
-               Request.Path.ToString(), Culture, resource);
         }
 
         protected bool IsAdmin

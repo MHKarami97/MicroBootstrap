@@ -13,6 +13,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
         public new QueueOptions Queue { get; set; }
         public new ExchangeOptions Exchange { get; set; }
         public string SpanContextHeader { get; set; }
+        public ContextOptions Context { get; set; }
         public LoggerOptions Logger { get; set; }
 
         public class LoggerOptions
@@ -20,7 +21,11 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
             public bool Enabled { get; set; }
             public string Level { get; set; }
         }
-
+        public class ContextOptions
+        {
+            public bool Enabled { get; set; }
+            public string Header { get; set; }
+        }
         public class MessageProcessorOptions
         {
             public bool Enabled { get; set; }

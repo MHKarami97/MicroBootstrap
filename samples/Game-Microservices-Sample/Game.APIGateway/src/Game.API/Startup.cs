@@ -17,6 +17,8 @@ using MicroBootstrap;
 using Consul;
 using MicroBootstrap.MessageBrokers.RabbitMQ;
 using MicroBootstrap.Authentication;
+using Game.API.Infrastructure;
+using PGame.API.Controllers.Infrastructure;
 
 namespace Game.API
 {
@@ -35,14 +37,17 @@ namespace Game.API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddSingleton<ICorrelationContextBuilder, CorrelationContextBuilder>();
+
             //This is called after ConfigureContainer. You can use IApplicationBuilder.ApplicationServices
             // here if you need to resolve things from the container.
             //this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
             services.AddWebApi();
             services.AddHealthChecks();
-            services.AddSwaggerDocs();
+            //services.AddSwaggerDocs();
             services.AddConsul();
-            services.AddJwt();
+            // services.AddJwt();
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();
@@ -86,12 +91,12 @@ namespace Game.API
             }
             app.UseErrorHandler();
             app.UseStaticFiles();
-            app.UseSwaggerDocs();
+            //app.UseSwaggerDocs();
             app.UseInitializers();
             app.UseRouting();
-            app.UseAuthentication(); // Must be after UseRouting()
-            app.UseAuthorization(); // Must be after UseAuthentication()
-            app.UseAccessTokenValidator();
+            // app.UseAuthentication(); // Must be after UseRouting()
+            // app.UseAuthorization(); // Must be after UseAuthentication()
+            // app.UseAccessTokenValidator();
             app.UseServiceId();
             app.UseEndpoints(endpoints =>
             {

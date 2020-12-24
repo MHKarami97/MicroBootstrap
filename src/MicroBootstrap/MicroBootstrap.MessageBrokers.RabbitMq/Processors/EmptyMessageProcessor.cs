@@ -1,5 +1,6 @@
 
 using System.Threading.Tasks;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Processors;
 
 namespace MicroBootstrap.MessageBrokers.RabbitMQ.Processors
 {

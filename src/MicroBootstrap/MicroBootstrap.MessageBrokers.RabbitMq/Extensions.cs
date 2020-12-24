@@ -1,6 +1,13 @@
 using System;
-using MicroBootstrap.MessageBrokers.RabbitMQ;
 using MicroBootstrap.MessageBrokers.RabbitMQ.Processors;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Context;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Conventions;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Middlewares;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Plugins;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Processors;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Publishers;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Serialization;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Subscribers;
 using MicroBootstrap.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +16,7 @@ using RawRabbit.Common;
 using RawRabbit.Configuration;
 using RawRabbit.Enrichers.MessageContext;
 using RawRabbit.Instantiation;
+using RawRabbit.Pipe;
 
 namespace MicroBootstrap.MessageBrokers.RabbitMQ
 {
@@ -45,8 +53,10 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
             Action<IServiceCollection> registerRedis)
         {
             serviceCollection.AddSingleton(options);
+            serviceCollection.AddSingleton<IContextProvider, ContextProvider>();
             serviceCollection.AddSingleton<RawRabbitConfiguration>(options);
             serviceCollection.AddSingleton<INamingConventions>((_) => new CustomNamingConventions(options));
+            serviceCollection.AddSingleton<IConventionsProvider, ConventionsProvider>();
             serviceCollection.AddTransient<IBusPublisher, BusPublisher>();
             if (options.MessageProcessor?.Enabled == true)
             {
@@ -76,12 +86,13 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
         }
 
         public static IServiceCollection AddExceptionToMessageMapper<T>(this IServiceCollection services)
-                  where T : class, IExceptionToMessageMapper
+            where T : class, IExceptionToMessageMapper
         {
             services.AddTransient<IExceptionToMessageMapper, T>();
 
             return services;
         }
+
         private static void ConfigureBus(IServiceCollection serviceCollection, Func<IRabbitMqPluginRegister,
             IRabbitMqPluginRegister> plugins = null)
         {
@@ -107,7 +118,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
                         clientBuilder.UseAttributeRouting()
                             .UseRetryLater()
                             .UpdateRetryInfo()
-                            .UseMessageContext<CorrelationContext>()
+                            //.UseMessageContext(ctx => ctx.GetDeliveryEventArgs()) //we will use context in scope of subscribe method
                             .UseContextForwarding();
 
                         if (options.MessageProcessor?.Enabled == true)
@@ -136,6 +147,5 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
 
             return clientBuilder;
         }
-
     }
 }

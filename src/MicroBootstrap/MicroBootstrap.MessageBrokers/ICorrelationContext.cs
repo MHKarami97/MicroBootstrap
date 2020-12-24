@@ -4,7 +4,7 @@ namespace MicroBootstrap.MessageBrokers
 {
     public interface ICorrelationContext
     {
-        Guid Id { get; }
+        Guid CorrelationId { get; }
         Guid UserId { get; }
         Guid ResourceId { get; }
         string TraceId { get; }

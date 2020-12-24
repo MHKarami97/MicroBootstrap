@@ -45,8 +45,6 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Polly" Version="7.2.0" />
     <PackageReference Include="Consul" Version="0.7.2.6" />
     <PackageReference Include="Autofac" Version="5.1.3" />

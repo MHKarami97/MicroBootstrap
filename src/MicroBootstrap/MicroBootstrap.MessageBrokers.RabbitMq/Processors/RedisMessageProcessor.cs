@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Processors;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace MicroBootstrap.MessageBrokers.RabbitMQ.Processors
