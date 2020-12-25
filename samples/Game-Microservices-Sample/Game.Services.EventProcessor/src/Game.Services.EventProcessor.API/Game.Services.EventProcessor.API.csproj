@@ -15,6 +15,6 @@
     <ProjectReference Include="..\..\..\..\..\src\MicroBootstrap\MicroBootstrap.csproj" />
   </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="MicroBootstrap" Version="1.2.*-*" />
+    <PackageReference Include="MicroBootstrap" Version="*-*" />
   </ItemGroup>
 </Project>
