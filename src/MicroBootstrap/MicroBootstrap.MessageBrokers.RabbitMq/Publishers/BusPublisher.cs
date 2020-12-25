@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MicroBootstrap.MessageBrokers;
 using MicroBootstrap.MessageBrokers.RabbitMQ;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Context;
 using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Conventions;
+using MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Serialization;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RawRabbit;
-using RawRabbit.Enrichers.MessageContext;
 
 namespace MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Publishers
 {
@@ -17,14 +18,20 @@ namespace MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Publishers
         private readonly RabbitMqOptions _options;
         private readonly ILogger<BusPublisher> _logger;
         private readonly IConventionsProvider _conventionsProvider;
+        private readonly bool _contextEnabled;
+        private readonly IContextProvider _contextProvider;
+        private readonly IRabbitMQSerializer _serializer;
 
         public BusPublisher(IBusClient busClient, RabbitMqOptions options, ILogger<BusPublisher> logger,
-            IConventionsProvider conventionsProvider)
+            IConventionsProvider conventionsProvider, IContextProvider contextProvider, IRabbitMQSerializer serializer)
         {
+            _serializer = serializer;
             _busClient = busClient;
+            _contextProvider = contextProvider;
             _options = options;
             _logger = logger;
             _conventionsProvider = conventionsProvider;
+            _contextEnabled = options.Context?.Enabled == true;
         }
 
         public Task PublishAsync<T>(T message, string messageId = null, string correlationId = null,
@@ -46,10 +53,16 @@ namespace MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Publishers
                             : correlationId;
                         properties.Timestamp = new AmqpTimestamp(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
                         properties.Headers = new Dictionary<string, object>();
-                        
+
                         if (!string.IsNullOrWhiteSpace(spanContext))
                         {
                             properties.Headers.Add(_spanContextHeader, spanContext);
+                        }
+
+                        if (_contextEnabled)
+                        {
+                            // add context to header
+                            IncludeMessageContext(messageContext, properties);
                         }
 
                         if (headers is { })
@@ -81,8 +94,18 @@ namespace MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Publishers
                                              $"to exchange: '{conventions.Exchange}' " +
                                              $"[id: '{properties.MessageId}', correlation id: '{properties.CorrelationId}']");
                         }
-                    }))
-                    .UseMessageContext(messageContext));
+                    })));
+        }
+
+        private void IncludeMessageContext(object context, IBasicProperties properties)
+        {
+            if (context is { })
+            {
+                properties.Headers.Add(_contextProvider.HeaderName, _serializer.Serialize(context));
+                return;
+            }
+
+            properties.Headers.Add(_contextProvider.HeaderName, "{}");
         }
     }
 }

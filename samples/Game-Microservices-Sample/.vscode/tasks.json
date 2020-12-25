@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build-API",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -14,7 +14,7 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish",
+            "label": "publish-API",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -26,13 +26,37 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "watch",
+            "label": "watch-API",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "watch",
                 "run",
                 "${workspaceFolder}/Game.APIGateway/src/Game.API/Game.API.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-EventProcessor",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Game.Services.EventProcessor/src/Game.Services.EventProcessor.API/Game.Services.EventProcessor.API.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-Messaging",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/Game.Services.Messaging/src/Game.Services.Messaging.API/Game.Services.Messaging.API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
