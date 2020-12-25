@@ -18,7 +18,6 @@ namespace MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Publishers
         private readonly RabbitMqOptions _options;
         private readonly ILogger<BusPublisher> _logger;
         private readonly IConventionsProvider _conventionsProvider;
-        private readonly bool _contextEnabled;
         private readonly IContextProvider _contextProvider;
         private readonly IRabbitMQSerializer _serializer;
 
@@ -31,7 +30,6 @@ namespace MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Publishers
             _options = options;
             _logger = logger;
             _conventionsProvider = conventionsProvider;
-            _contextEnabled = options.Context?.Enabled == true;
         }
 
         public Task PublishAsync<T>(T message, string messageId = null, string correlationId = null,
@@ -40,7 +38,10 @@ namespace MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Publishers
             where T : class
         {
             var _spanContextHeader = _options.GetSpanContextHeader();
+            var _contextHeader = _options.GetContextHeader();
+            
             var _loggerEnabled = _options.Logger?.Enabled ?? true;
+            var _contextEnabled = _options.Context?.Enabled ?? true;
 
             return _busClient.PublishAsync(message, ctx =>
                 ctx.UsePublishConfiguration(cfg => cfg.WithProperties(properties =>

@@ -12,9 +12,7 @@ namespace MicroBootstrap.MicroBootstrap.MessageBrokers.RabbitMQ.Context
         public ContextProvider(IRabbitMQSerializer serializer, RabbitMqOptions options)
         {
             _serializer = serializer;
-            HeaderName = string.IsNullOrWhiteSpace(options.Context?.Header)
-                ? "message_context"
-                : options.Context.Header;
+            HeaderName = options.GetContextHeader();
         }
 
         public object Get(IDictionary<string, object> headers)

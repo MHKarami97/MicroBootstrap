@@ -47,5 +47,8 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
 
         public string GetSpanContextHeader()
            => string.IsNullOrWhiteSpace(SpanContextHeader) ? "span_context" : SpanContextHeader;
+
+        public string GetContextHeader()
+        => string.IsNullOrWhiteSpace(Context?.Header) ? "message_context" : Context?.Header;
     }
 }
