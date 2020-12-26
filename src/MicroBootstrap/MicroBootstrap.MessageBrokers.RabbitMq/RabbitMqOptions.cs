@@ -10,6 +10,7 @@ namespace MicroBootstrap.MessageBrokers.RabbitMQ
         public MessageProcessorOptions MessageProcessor { get; set; }
         public IEnumerable<string> HostNames { get; set; }
         public string ConventionsCasing { get; set; }
+         public bool RequeueFailedMessages { get; set; }
         public new QueueOptions Queue { get; set; }
         public new ExchangeOptions Exchange { get; set; }
         public string SpanContextHeader { get; set; }
