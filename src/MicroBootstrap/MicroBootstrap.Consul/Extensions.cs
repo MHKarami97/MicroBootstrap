@@ -1,122 +1,151 @@
 using System;
+using System.Linq;
+using MicroBootstrap.Consul.Http;
+using MicroBootstrap.Consul.MessageHandlers;
+using MicroBootstrap.Consul.Models;
+using MicroBootstrap.Consul.Services;
+using MicroBootstrap.HTTP;
 using MicroBootstrap.WebApi;
-using Consul;
-using MicroBootstrap.Fabio;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace MicroBootstrap.Consul
 {
     public static class Extensions
     {
-        private static readonly string ConsulSectionName = "consul";
-        private static readonly string FabioSectionName = "fabio";
+        private const string DefaultInterval = "5s";
+        private const string SectionName = "consul";
+        private const string RegistryName = "discovery.consul";
 
-        public static IServiceCollection AddConsul(this IServiceCollection services)
+        public static IServiceCollection AddConsul(this IServiceCollection services, string sectionName = SectionName,
+            string httpClientSectionName = "httpClient")
         {
-            IConfiguration configuration;
+            if (string.IsNullOrWhiteSpace(sectionName))
+            {
+                sectionName = SectionName;
+            }
+            
+            var consulOptions = services.GetOptions<ConsulOptions>(sectionName);
+            var httpClientOptions = services.GetOptions<HttpClientOptions>(httpClientSectionName);
+            return services.AddConsul(consulOptions, httpClientOptions);
+        }
+
+        public static IServiceCollection AddConsul(this IServiceCollection services, ConsulOptions options,
+            HttpClientOptions httpClientOptions)
+        {
+            services.AddSingleton(options);
+
+            if (httpClientOptions.Type?.ToLowerInvariant() == "consul")
+            {
+                //https://www.stevejgordon.co.uk/httpclientfactory-aspnetcore-outgoing-request-middleware-pipeline-delegatinghandlers
+                services.AddTransient<ConsulServiceDiscoveryMessageHandler>();
+
+                services.AddHttpClient<IConsulHttpClient, ConsulHttpClient>("consul-http")
+                    .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>();
+                services.RemoveHttpClient();
+                services.AddHttpClient<IHttpClient, ConsulHttpClient>("consul")
+                    .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>();
+            }
+
+            services.AddTransient<IConsulServicesRegistry, ConsulServicesRegistry>();
+            var registration = services.CreateConsulAgentRegistration(options);
+            if (registration is null)
+            {
+                return services;
+            }
+
+            services.AddSingleton(registration);
+
+            return services;
+        }
+
+        public static void AddConsulHttpClient(this IServiceCollection services, string clientName, string serviceName)
+            => services.AddHttpClient<IHttpClient, ConsulHttpClient>(clientName)
+                .AddHttpMessageHandler(c => new ConsulServiceDiscoveryMessageHandler(
+                    c.GetService<IConsulServicesRegistry>(),
+                    c.GetService<ConsulOptions>(), serviceName, true));
+
+        private static ServiceRegistration CreateConsulAgentRegistration(this IServiceCollection services,
+            ConsulOptions options)
+        {
+            var enabled = options.Enabled;
+            var consulEnabled = Environment.GetEnvironmentVariable("CONSUL_ENABLED")?.ToLowerInvariant();
+            if (!string.IsNullOrWhiteSpace(consulEnabled))
+            {
+                enabled = consulEnabled == "true" || consulEnabled == "1";
+            }
+
+            if (!enabled)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(options.Address))
+            {
+                throw new ArgumentException("Consul address can not be empty.",
+                    nameof(options.PingEndpoint));
+            }
+
+            services.AddHttpClient<IConsulService, ConsulService>(c => c.BaseAddress = new Uri(options.Url));
+
+            //a background service along with our app to register our service instance to consul
+            if (services.All(x => x.ServiceType != typeof(ConsulHostedService)))
+            {
+                services.AddHostedService<ConsulHostedService>();
+            }
+
+            var serviceId = string.Empty;
             using (var serviceProvider = services.BuildServiceProvider())
             {
-                configuration = serviceProvider.GetService<IConfiguration>();
+                serviceId = serviceProvider.GetRequiredService<IServiceId>().Id;
             }
-            //Register for use in Dependency Injection
-            var options = configuration.GetOptions<ConsulOptions>(ConsulSectionName);
-            services.Configure<ConsulOptions>(configuration.GetSection(ConsulSectionName));
-            services.Configure<FabioOptions>(configuration.GetSection(FabioSectionName));
-            services.AddTransient<IConsulServicesRegistry, ConsulServicesRegistry>();
-            services.AddTransient<ConsulServiceDiscoveryMessageHandler>();
-            services.AddHttpClient<ConsulHttpClient>()
-                .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>();
 
-            return services.AddSingleton<IConsulClient>(c => new ConsulClient(cfg =>
+            var registration = new ServiceRegistration
             {
-                if (!string.IsNullOrEmpty(options.Url))
-                {
-                    cfg.Address = new Uri(options.Url);
-                }
-            }));
+                Name = options.Service,
+                Id = $"{options.Service}:{serviceId}",
+                Address = options.Address,
+                Port = options.Port,
+                Tags = options.Tags,
+                Meta = options.Meta,
+                EnableTagOverride = options.EnableTagOverride,
+                Connect = options.Connect?.Enabled == true ? new Connect() : null
+            };
+
+            if (!options.PingEnabled)
+            {
+                return registration;
+            }
+            
+            var pingEndpoint = string.IsNullOrWhiteSpace(options.PingEndpoint) ? string.Empty :
+                options.PingEndpoint.StartsWith("/") ? options.PingEndpoint : $"/{options.PingEndpoint}";
+            if (pingEndpoint.EndsWith("/"))
+            {
+                pingEndpoint = pingEndpoint.Substring(0, pingEndpoint.Length - 1);
+            }
+
+            var scheme = options.Address.StartsWith("http", StringComparison.InvariantCultureIgnoreCase)
+                ? string.Empty
+                : "http://";
+            var check = new ServiceCheck
+            {
+                Interval = ParseTime(options.PingInterval),
+                DeregisterCriticalServiceAfter = ParseTime(options.RemoveAfterInterval),
+                Http = $"{scheme}{options.Address}{(options.Port > 0 ? $":{options.Port}" : string.Empty)}" +
+                       $"{pingEndpoint}"
+            };
+            registration.Checks = new[] {check};
+
+            return registration;
         }
 
-        //Returns unique service ID used for removing the service from registry.
-        public static string UseConsul(this IApplicationBuilder app)
+        private static string ParseTime(string value)
         {
-            using (var scope = app.ApplicationServices.CreateScope())
+            if (string.IsNullOrWhiteSpace(value))
             {
-                var consulOptions = scope.ServiceProvider.GetService<IOptions<ConsulOptions>>();
-                var fabioOptions = scope.ServiceProvider.GetService<IOptions<FabioOptions>>();
-                var enabled = consulOptions.Value.Enabled;
-                var consulEnabled = Environment.GetEnvironmentVariable("CONSUL_ENABLED")?.ToLowerInvariant();
-                if (!string.IsNullOrWhiteSpace(consulEnabled))
-                {
-                    enabled = consulEnabled == "true" || consulEnabled == "1";
-                }
-
-                if (!enabled)
-                {
-                    return string.Empty;
-                }
-
-
-                var address = consulOptions.Value.Address;
-                if (string.IsNullOrWhiteSpace(address))
-                {
-                    throw new ArgumentException("Consul address can not be empty.",
-                        nameof(consulOptions.Value.PingEndpoint));
-                }
-                //https://cecilphillip.com/using-consul-for-service-discovery-with-asp-net-core/
-                // Retrieve Consul client from DI
-                var uniqueId = scope.ServiceProvider.GetService<IServiceId>().Id;
-                var client = scope.ServiceProvider.GetService<IConsulClient>();
-                var serviceName = consulOptions.Value.Service;
-                //create unique serviceId per service instance create, init standalone service after creation separately.
-                //use when we have multiple instance of a particular microservice and because each microservice has same name
-                //we need distinguish between services so for this case and we use serviceId
-                var serviceId = $"{serviceName}:{uniqueId}";
-                var port = consulOptions.Value.Port;
-                var pingEndpoint = consulOptions.Value.PingEndpoint;
-                var pingInterval = consulOptions.Value.PingInterval <= 0 ? 5 : consulOptions.Value.PingInterval;
-                var removeAfterInterval =
-                    consulOptions.Value.RemoveAfterInterval <= 0 ? 10 : consulOptions.Value.RemoveAfterInterval;
-                // Register service with consul
-                var registration = new AgentServiceRegistration
-                {
-                    Name = serviceName, //name use for group name a specific service
-                    ID = serviceId, //unique name of each instance of a service in a group
-                    Address = address,
-                    Port = port,
-                    //setup fabio tags as SSSD on consul and fabio create a routing table 
-                    Tags = fabioOptions.Value.Enabled ? GetFabioTags(serviceName, fabioOptions.Value.Service) : null
-                };
-                //https://cecilphillip.com/using-consul-for-health-checks-with-asp-net-core/
-                //PingEnabled for checking Health
-                if (consulOptions.Value.PingEnabled || fabioOptions.Value.Enabled)
-                {
-                    var scheme = address.StartsWith("http", StringComparison.InvariantCultureIgnoreCase)
-                        ? string.Empty
-                        : "http://";
-                    var check = new AgentServiceCheck
-                    {
-                        Interval = TimeSpan.FromSeconds(pingInterval),
-                        DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(removeAfterInterval),
-                        HTTP = $"{scheme}{address}{(port > 0 ? $":{port}" : string.Empty)}/{pingEndpoint}"
-                    };
-                    registration.Checks = new[] { check };
-                }
-
-                client.Agent.ServiceRegister(registration);
-
-                return serviceId;
+                return DefaultInterval;
             }
-        }
-        //Setup Fabio Tags
-        private static string[] GetFabioTags(string consulService, string fabioService)
-        {
-            var service = (string.IsNullOrWhiteSpace(fabioService) ? consulService : fabioService)
-                .ToLowerInvariant();
 
-            return new[] { $"urlprefix-/{service} strip=/{service}" };
+            return int.TryParse(value, out var number) ? $"{number}s" : value;
         }
     }
 }

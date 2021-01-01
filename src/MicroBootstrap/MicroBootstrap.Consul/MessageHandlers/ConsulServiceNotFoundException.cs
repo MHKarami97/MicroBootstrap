@@ -1,8 +1,8 @@
 using System;
 
-namespace MicroBootstrap.Consul
+namespace MicroBootstrap.Consul.MessageHandlers
 {
-    public class ConsulServiceNotFoundException : Exception
+    internal sealed class ConsulServiceNotFoundException : Exception
     {
         public string ServiceName { get; set; }
         

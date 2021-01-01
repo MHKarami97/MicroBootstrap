@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using MicroBootstrap.Consul;
+using MicroBootstrap.Consul.MessageHandlers;
+using MicroBootstrap.Consul.Services;
 using MicroBootstrap.Fabio;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,7 +55,7 @@ namespace MicroBootstrap.RestEase
             services.AddHttpClient(clientName)
                 .AddHttpMessageHandler(c =>
                     new ConsulServiceDiscoveryMessageHandler(c.GetService<IConsulServicesRegistry>(),
-                        c.GetService<IOptions<ConsulOptions>>(), serviceName, overrideRequestUri: true));
+                        c.GetService<ConsulOptions>(), serviceName, overrideRequestUri: true));
         }
 
         private static void ConfigureFabioClient(IServiceCollection services, string clientName,

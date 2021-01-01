@@ -107,12 +107,6 @@ namespace Game.API
             }
         );
             app.UseRabbitMQ();
-            var consulServiceId = app.UseConsul();
-            applicationLifetime.ApplicationStopped.Register(() =>
-            {
-                client.Agent.ServiceDeregister(consulServiceId);
-                AutofacContainer.Dispose();
-            });
         }
     }
 }

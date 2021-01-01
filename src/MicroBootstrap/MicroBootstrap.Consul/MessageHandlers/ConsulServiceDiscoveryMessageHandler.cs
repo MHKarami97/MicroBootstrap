@@ -2,24 +2,21 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Polly;
+using MicroBootstrap.Consul.Services;
 
-namespace MicroBootstrap.Consul
+namespace MicroBootstrap.Consul.MessageHandlers
 {
-    public class ConsulServiceDiscoveryMessageHandler : DelegatingHandler
+    internal sealed class ConsulServiceDiscoveryMessageHandler : DelegatingHandler
     {
         private readonly IConsulServicesRegistry _servicesRegistry;
-        private readonly IOptions<ConsulOptions> _options;
+        private readonly ConsulOptions _options;
         private readonly string _serviceName;
         private readonly bool? _overrideRequestUri;
 
-        //IConsulServicesRegistry GetAsync use for return all services are available on consul and get first 
-        //service instance randomly because possible exist multiple instance.
-         public ConsulServiceDiscoveryMessageHandler(IConsulServicesRegistry servicesRegistry,
-            IOptions<ConsulOptions> options, string serviceName = null, bool? overrideRequestUri = null)
+        public ConsulServiceDiscoveryMessageHandler(IConsulServicesRegistry servicesRegistry,
+            ConsulOptions options, string serviceName = null, bool? overrideRequestUri = null)
         {
-            if (string.IsNullOrWhiteSpace(options.Value.Url))
+            if (string.IsNullOrWhiteSpace(options.Url))
             {
                 throw new InvalidOperationException("Consul URL was not provided.");
             }
@@ -46,30 +43,31 @@ namespace MicroBootstrap.Consul
                     ? new Uri(
                         $"{request.RequestUri.Scheme}://{_serviceName}/{request.RequestUri.Host}{request.RequestUri.PathAndQuery}")
                     : request.RequestUri;
-        
-        //Use Polly for call 3 time
+
         private async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             string serviceName, Uri uri, CancellationToken cancellationToken)
-            => await Policy.Handle<Exception>()
-                .WaitAndRetryAsync(RequestRetries, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)))
-                .ExecuteAsync(async () => 
-                {
-                    request.RequestUri = await GetRequestUriAsync(request, serviceName, uri);
+        {
+            if (!_options.Enabled)
+            {
+                return await base.SendAsync(request, cancellationToken);
+            }
 
-                    return await base.SendAsync(request, cancellationToken);
-                });
+            request.RequestUri = await GetRequestUriAsync(request, serviceName, uri);
+
+            return await base.SendAsync(request, cancellationToken);
+        }
 
         private async Task<Uri> GetRequestUriAsync(HttpRequestMessage request,
             string serviceName, Uri uri)
         {
             var service = await _servicesRegistry.GetAsync(serviceName);
-            if (service == null)
+            if (service is null)
             {
                 throw new ConsulServiceNotFoundException($"Consul service: '{serviceName}' was not found.",
                     serviceName);
             }
 
-            if (!_options.Value.SkipLocalhostDockerDnsReplace)
+            if (!_options.SkipLocalhostDockerDnsReplace)
             {
                 service.Address = service.Address.Replace("docker.for.mac.localhost", "localhost")
                     .Replace("docker.for.win.localhost", "localhost")
@@ -84,7 +82,5 @@ namespace MicroBootstrap.Consul
 
             return uriBuilder.Uri;
         }
-
-        private int RequestRetries => _options.Value.RequestRetries <= 0 ? 3 : _options.Value.RequestRetries;
     }
 }

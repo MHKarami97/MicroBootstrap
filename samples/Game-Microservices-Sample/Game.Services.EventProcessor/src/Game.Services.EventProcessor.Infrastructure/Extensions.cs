@@ -55,12 +55,6 @@ namespace Game.Services.EventProcessor.Infrastructure
                  .UseRabbitMQ()
                      .SubscribeCommand<AddGameEventSource>();
 
-
-            var consulServiceId = app.UseConsul();
-            applicationLifetime.ApplicationStopped.Register(() =>
-            {
-                client.Agent.ServiceDeregister(consulServiceId);
-            });
             return app;
         }
     }

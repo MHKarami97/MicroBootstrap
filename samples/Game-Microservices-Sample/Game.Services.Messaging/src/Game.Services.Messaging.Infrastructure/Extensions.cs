@@ -52,11 +52,6 @@ namespace Game.Services.Messaging.Infrastructure
                  .UseAppMetrics()
                  .UseRabbitMQ().SubscribeEvent<GameEventSourceAdded>();
 
-            var consulServiceId = app.UseConsul();
-            applicationLifetime.ApplicationStopped.Register(() =>
-            {
-                client.Agent.ServiceDeregister(consulServiceId);
-            });
             return app;
         }
     }
