@@ -19,6 +19,7 @@ namespace MicroBootstrap.Consul.Services
 
         public async Task<ServiceAgent> GetAsync(string name)
         {
+            //give me a instance of service from available instances (pick first from unused instance) 'client side load balancing' or some sort of work like load balancing 
             var services = await _consulService.GetServiceAgentsAsync(name);
             if (!services.Any())
             {

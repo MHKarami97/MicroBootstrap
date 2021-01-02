@@ -33,7 +33,9 @@ namespace MicroBootstrap.Consul
             HttpClientOptions httpClientOptions)
         {
             services.AddSingleton(options);
-
+            
+            //here if we set Type in HttpClientOption in our appsettings to 'consul' we will resolve a custom HttpClient for our ConsulHttpClient that will resolve using IHttpClient 
+            //that is a reason to create abstraction on HttpClient - changing 'type' property will switch implementation injected to our `IHttpClient`
             if (httpClientOptions.Type?.ToLowerInvariant() == "consul")
             {
                 //https://www.stevejgordon.co.uk/httpclientfactory-aspnetcore-outgoing-request-middleware-pipeline-delegatinghandlers
@@ -43,7 +45,8 @@ namespace MicroBootstrap.Consul
                     .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>();
                 services.RemoveHttpClient();
                 services.AddHttpClient<IHttpClient, ConsulHttpClient>("consul")
-                    .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>();
+                //before send a request to particular service we could add some headers or change the payload like middleware, in this middleware before we send a request we ask consul to give us a available instance and we override original request uri
+                    .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>(); 
             }
 
             services.AddTransient<IConsulServicesRegistry, ConsulServicesRegistry>();

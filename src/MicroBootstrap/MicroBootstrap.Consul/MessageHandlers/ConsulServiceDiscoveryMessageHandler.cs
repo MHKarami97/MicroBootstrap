@@ -51,7 +51,7 @@ namespace MicroBootstrap.Consul.MessageHandlers
             {
                 return await base.SendAsync(request, cancellationToken);
             }
-
+            //before we send a request we ask consul to give us a available instance and we override original request uri
             request.RequestUri = await GetRequestUriAsync(request, serviceName, uri);
 
             return await base.SendAsync(request, cancellationToken);
@@ -60,6 +60,7 @@ namespace MicroBootstrap.Consul.MessageHandlers
         private async Task<Uri> GetRequestUriAsync(HttpRequestMessage request,
             string serviceName, Uri uri)
         {
+            //ask the consul registry give me a instance of service from available instances (pick first from unused instance) with 'client side load balancing' or with some sort of work like load balancing then override request address with one provide by consul.
             var service = await _servicesRegistry.GetAsync(serviceName);
             if (service is null)
             {
