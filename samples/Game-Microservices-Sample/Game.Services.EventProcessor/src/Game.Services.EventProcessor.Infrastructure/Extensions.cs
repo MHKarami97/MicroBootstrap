@@ -1,5 +1,3 @@
-using MicroBootstrap.Consul;
-using MicroBootstrap.Fabio;
 using MicroBootstrap.WebApi;
 using Microsoft.AspNetCore.Builder;
 using MicroBootstrap.Mongo;
@@ -18,6 +16,8 @@ using Game.Services.EventProcessor.Core.Repositories;
 using MicroBootstrap.Queries;
 using MicroBootstrap.MessageBrokers;
 using MicroBootstrap.MessageBrokers.RabbitMQ;
+using MicroBootstrap.Discovery.Consul.Consul;
+using MicroBootstrap.LoadBalancer.Fabio;
 
 namespace Game.Services.EventProcessor.Infrastructure
 {

@@ -1,5 +1,4 @@
 using Autofac;
-using MicroBootstrap.Consul;
 using MicroBootstrap.Jaeger;
 using MicroBootstrap.Redis;
 using MicroBootstrap.WebApi;
@@ -8,8 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MicroBootstrap.RestEase;
-using Microsoft.Extensions.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using Game.API.Services;
 using MicroBootstrap.Swagger;
@@ -19,6 +16,9 @@ using MicroBootstrap.MessageBrokers.RabbitMQ;
 using MicroBootstrap.Authentication;
 using Game.API.Infrastructure;
 using PGame.API.Controllers.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using MicroBootstrap.Discovery.Consul.Consul;
+using MicroBootstrap.Http.RestEase;
 
 namespace Game.API
 {

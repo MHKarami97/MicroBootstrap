@@ -1,5 +1,3 @@
-using MicroBootstrap.Consul;
-using MicroBootstrap.Fabio;
 using MicroBootstrap.WebApi;
 using Microsoft.AspNetCore.Builder;
 using MicroBootstrap.Mongo;
@@ -17,6 +15,8 @@ using Game.Services.Messaging.Infrastructure.Mongo.Repositories;
 using Game.Services.Messaging.Core.Repositories;
 using MicroBootstrap.MessageBrokers.RabbitMQ;
 using MicroBootstrap.MessageBrokers;
+using MicroBootstrap.Discovery.Consul.Consul;
+using MicroBootstrap.LoadBalancer.Fabio;
 
 namespace Game.Services.Messaging.Infrastructure
 {
