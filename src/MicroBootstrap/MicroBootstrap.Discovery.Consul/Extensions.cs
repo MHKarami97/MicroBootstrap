@@ -40,12 +40,13 @@ namespace MicroBootstrap.Discovery.Consul.Consul
             {
                 //https://www.stevejgordon.co.uk/httpclientfactory-aspnetcore-outgoing-request-middleware-pipeline-delegatinghandlers
                 services.AddTransient<ConsulServiceDiscoveryMessageHandler>();
-
                 services.AddHttpClient<IConsulHttpClient, ConsulHttpClient>("consul-http")
                     .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>();
+
+                //HttpClient issue: https://github.com/aspnet/AspNetCore/issues/13346
                 services.RemoveHttpClient();
-                services.AddHttpClient<IHttpClient, ConsulHttpClient>("consul")
                 //before send a request to particular service we could add some headers or change the payload like middleware, in this middleware before we send a request we ask consul to give us a available instance and we override original request uri
+                services.AddHttpClient<IHttpClient, ConsulHttpClient>("consul")
                     .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>(); 
             }
 

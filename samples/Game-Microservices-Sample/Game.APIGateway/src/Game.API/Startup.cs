@@ -65,7 +65,7 @@ namespace Game.API
             services.AddInitializers();
 
             //RestEase Register Services
-            services.RegisterServiceForwarder<IGameEventProcessorService>("game-event-processor-service");
+            services.AddRestEaseClient<IGameEventProcessorService>("game-event-processor-service");
         }
 
 

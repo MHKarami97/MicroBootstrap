@@ -1,9 +1,8 @@
-using System.Threading.Tasks;
+using MicroBootstrap.HTTP;
 
 namespace MicroBootstrap.LoadBalancer.Fabio
 {
-    public interface IFabioHttpClient
+    public interface IFabioHttpClient : IHttpClient
     {
-        Task<T> GetAsync<T>(string requestUri);
     }
 }
