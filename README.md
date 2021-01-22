@@ -16,7 +16,7 @@ For using [this package](https://www.nuget.org/packages/MicroBootstrap/) you can
 dotnet add package MicroBootstrap
 ```
 
-# Give a Star! ⭐️
+## Give a Star! ⭐️
 If you like or are using this repository to learn or start your solution, please give it a star. Thanks!
 
 ## Thecnologies & Stack
