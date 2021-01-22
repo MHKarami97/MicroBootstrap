@@ -21,6 +21,10 @@ For using [this package](https://www.nuget.org/packages/MicroBootstrap/) you can
 dotnet add package MicroBootstrap
 ```
 
+# Give a Star! ⭐️
+If you like or are using this repository to learn or start your solution, please give it a star. Thanks!
+
+
 ## Thecnologies & Stack
 ----------------
 * .Net Core 3.1
@@ -56,7 +60,3 @@ dotnet add package MicroBootstrap
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request 
-
-## Show your support
-----------------
-Please ⭐️ this repository if this project helped you!
