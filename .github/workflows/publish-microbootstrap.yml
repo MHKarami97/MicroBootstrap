@@ -54,6 +54,7 @@ jobs:
        sh ./scripts/dotnet-build-micro-bootstrap.sh
 
     - name: Publish
+      if: matrix.os == 'ubuntu-latest'
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -67,6 +68,7 @@ jobs:
        
      #https://dusted.codes/github-actions-for-dotnet-core-nuget-packages
     - name: Upload Artifact
+      if: matrix.os == 'ubuntu-latest'
       uses: actions/upload-artifact@v2
       with:
           name: nupkg
@@ -83,7 +85,7 @@ jobs:
           name: nupkg
       - name: Push to GitHub Feed
         run: |
-          for f in ./src/MicroBootstrap/*.nupkg
+          for f in ./nupkg/*.nupkg
           do
             curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
           done
