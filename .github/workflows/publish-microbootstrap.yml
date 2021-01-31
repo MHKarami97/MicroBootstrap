@@ -54,7 +54,6 @@ jobs:
        sh ./scripts/dotnet-build-micro-bootstrap.sh
 
     - name: Publish
-      if: matrix.os == 'ubuntu-latest'
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -68,7 +67,6 @@ jobs:
        
      #https://dusted.codes/github-actions-for-dotnet-core-nuget-packages
     - name: Upload Artifact
-      if: matrix.os == 'ubuntu-latest'
       uses: actions/upload-artifact@v2
       with:
           name: nupkg
@@ -76,7 +74,6 @@ jobs:
     
   prerelease:
     needs: build
-    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
