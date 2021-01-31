@@ -64,3 +64,10 @@ jobs:
         Github_ID: ${{ env.Github_ID }}
       run: |
        sh ./scripts/dotnet-pack-micro-bootstrap.sh
+       
+     #https://dusted.codes/github-actions-for-dotnet-core-nuget-packages
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+          name: nupkg
+          path: ./src/MicroBootstrap/bin/Release/*.nupkg
