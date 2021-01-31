@@ -73,3 +73,9 @@ jobs:
        sh ./scripts/docker-publish-event-processor-service.sh
        sh ./scripts/docker-publish-messaging-service.sh
        sh ./scripts/docker-publish-api-gateway.sh
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+          name: nupkg
+          path: ./src/MicroBootstrap/bin/Release/*.nupkg
