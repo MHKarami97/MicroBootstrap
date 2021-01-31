@@ -70,10 +70,11 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
           name: nupkg
-          path: ./src/MicroBootstrap/bin/Release/*.nupkg
+          path: ./src/MicroBootstrap/*.nupkg
     
   prerelease:
     needs: build
+    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
@@ -82,7 +83,7 @@ jobs:
           name: nupkg
       - name: Push to GitHub Feed
         run: |
-          for f in ./nupkg/*.nupkg
+          for f in ./src/MicroBootstrap/*.nupkg
           do
             curl -vX PUT -u "$GITHUB_USER:$GITHUB_TOKEN" -F package=@$f $GITHUB_FEED
           done
