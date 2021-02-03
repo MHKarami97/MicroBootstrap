@@ -23,7 +23,7 @@ namespace MicroBootstrap.Discovery.Consul.Consul
             {
                 sectionName = SectionName;
             }
-            
+
             var consulOptions = services.GetOptions<ConsulOptions>(sectionName);
             var httpClientOptions = services.GetOptions<HttpClientOptions>(httpClientSectionName);
             return services.AddConsul(consulOptions, httpClientOptions);
@@ -33,7 +33,7 @@ namespace MicroBootstrap.Discovery.Consul.Consul
             HttpClientOptions httpClientOptions)
         {
             services.AddSingleton(options);
-            
+
             //here if we set Type in HttpClientOption in our appsettings to 'consul' we will resolve a custom HttpClient for our ConsulHttpClient that will resolve using IHttpClient 
             //that is a reason to create abstraction on HttpClient - changing 'type' property will switch implementation injected to our `IHttpClient`
             if (httpClientOptions.Type?.ToLowerInvariant() == "consul")
@@ -47,10 +47,11 @@ namespace MicroBootstrap.Discovery.Consul.Consul
                 services.RemoveHttpClient();
                 //before send a request to particular service we could add some headers or change the payload like middleware, in this middleware before we send a request we ask consul to give us a available instance and we override original request uri
                 services.AddHttpClient<IHttpClient, ConsulHttpClient>("consul")
-                    .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>(); 
+                    .AddHttpMessageHandler<ConsulServiceDiscoveryMessageHandler>();
             }
 
             services.AddTransient<IConsulServicesRegistry, ConsulServicesRegistry>();
+            //regsitering our service with use of its ServiceRegistration information to consul registry with use of Consul APIs and a HostedService for running when app is started
             var registration = services.CreateConsulAgentRegistration(options);
             if (registration is null)
             {
@@ -119,7 +120,7 @@ namespace MicroBootstrap.Discovery.Consul.Consul
             {
                 return registration;
             }
-            
+
             var pingEndpoint = string.IsNullOrWhiteSpace(options.PingEndpoint) ? string.Empty :
                 options.PingEndpoint.StartsWith("/") ? options.PingEndpoint : $"/{options.PingEndpoint}";
             if (pingEndpoint.EndsWith("/"))
@@ -137,7 +138,7 @@ namespace MicroBootstrap.Discovery.Consul.Consul
                 Http = $"{scheme}{options.Address}{(options.Port > 0 ? $":{options.Port}" : string.Empty)}" +
                        $"{pingEndpoint}"
             };
-            registration.Checks = new[] {check};
+            registration.Checks = new[] { check };
 
             return registration;
         }

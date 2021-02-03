@@ -5,6 +5,7 @@ using MicroBootstrap.Discovery.Consul.Consul;
 using MicroBootstrap.Discovery.Consul.Models;
 using MicroBootstrap.HTTP;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace MicroBootstrap.LoadBalancer.Fabio
 {
@@ -66,7 +67,7 @@ namespace MicroBootstrap.LoadBalancer.Fabio
             {
                 registration.Tags.AddRange(tags);
             }
-
+            //update consul registry with our tags for services and this ServiceRegistration information will use by ConsulHostedService of our consul and when app is started it will register our service to consul registry
             services.UpdateConsulRegistration(registration);
 
             return services;
@@ -79,9 +80,12 @@ namespace MicroBootstrap.LoadBalancer.Fabio
         private static void UpdateConsulRegistration(this IServiceCollection services,
             ServiceRegistration registration)
         {
-            var serviceDescriptor = services.FirstOrDefault(sd => sd.ServiceType == typeof(ServiceRegistration));
-            services.Remove(serviceDescriptor);
-            services.AddSingleton(registration);
+            // var serviceDescriptor = services.FirstOrDefault(sd => sd.ServiceType == typeof(ServiceRegistration));
+            // services.Remove(serviceDescriptor);
+            // services.AddSingleton(registration);
+            
+            //update to use builtin replace in .net core 
+            services.Replace(ServiceDescriptor.Singleton(registration));
         }
 
         private static List<string> GetFabioTags(string consulService, string fabioService)
