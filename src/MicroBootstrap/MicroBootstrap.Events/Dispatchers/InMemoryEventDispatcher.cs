@@ -1,6 +1,4 @@
 using System.Threading.Tasks;
-using MicroBootstrap.Messages;
-using MicroBootstrap.RabbitMq;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroBootstrap.Events.Dispatchers
@@ -14,13 +12,13 @@ namespace MicroBootstrap.Events.Dispatchers
             _serviceFactory = serviceFactory;
         }
 
-        public async Task PublishAsync<T>(T @event, ICorrelationContext context) where T : class, IEvent
+        public async Task PublishAsync<T>(T @event) where T : class, IEvent
         {
             using var scope = _serviceFactory.CreateScope();
             var handlers = scope.ServiceProvider.GetServices<IEventHandler<T>>();
             foreach (var handler in handlers)
             {
-                await handler.HandleAsync(@event, context ?? CorrelationContext.Empty);
+                await handler.HandleAsync(@event);
             }
         }
     }

@@ -1,9 +1,5 @@
-using System.Reflection;
 using Autofac;
-using MicroBootstrap.Authentication;
-using MicroBootstrap.Consul;
 using MicroBootstrap.Jaeger;
-using MicroBootstrap.RabbitMq;
 using MicroBootstrap.Redis;
 using MicroBootstrap.WebApi;
 using Microsoft.AspNetCore.Builder;
@@ -11,13 +7,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MicroBootstrap.RestEase;
-using Microsoft.Extensions.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using Game.API.Services;
 using MicroBootstrap.Swagger;
 using MicroBootstrap;
 using Consul;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
+using MicroBootstrap.Authentication;
+using Game.API.Infrastructure;
+using PGame.API.Controllers.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using MicroBootstrap.Discovery.Consul.Consul;
+using MicroBootstrap.Http.RestEase;
 
 namespace Game.API
 {
@@ -36,18 +37,21 @@ namespace Game.API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddSingleton<ICorrelationContextBuilder, CorrelationContextBuilder>();
+
             //This is called after ConfigureContainer. You can use IApplicationBuilder.ApplicationServices
             // here if you need to resolve things from the container.
             //this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
             services.AddWebApi();
             services.AddHealthChecks();
-            services.AddSwaggerDocs();
+            //services.AddSwaggerDocs();
             services.AddConsul();
-            //services.AddJwt();
+            // services.AddJwt();
             services.AddJaeger();
             services.AddOpenTracing();
             services.AddRedis();
-            services.AddRabbitMq();
+            services.AddRabbitMQ();// Rabbit will add Redis automatically if options.MessageProcessor.Type = redis
             // services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
             services.AddCors(options =>
             {
@@ -61,7 +65,7 @@ namespace Game.API
             services.AddInitializers();
 
             //RestEase Register Services
-            services.RegisterServiceForwarder<IGameEventProcessorService>("game-event-processor-service");
+            services.AddRestEaseClient<IGameEventProcessorService>("game-event-processor-service");
         }
 
 
@@ -85,13 +89,14 @@ namespace Game.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseErrorHandler();
             app.UseStaticFiles();
-            app.UseSwaggerDocs();
+            //app.UseSwaggerDocs();
             app.UseInitializers();
             app.UseRouting();
-            app.UseErrorHandler();
-            app.UseAuthorization();
-            app.UseAuthentication();
+            // app.UseAuthentication(); // Must be after UseRouting()
+            // app.UseAuthorization(); // Must be after UseAuthentication()
+            // app.UseAccessTokenValidator();
             app.UseServiceId();
             app.UseEndpoints(endpoints =>
             {
@@ -101,13 +106,7 @@ namespace Game.API
                      await context.Response.WriteAsync(context.RequestServices.GetService<AppOptions>().Name));
             }
         );
-            app.UseRabbitMq();
-            var consulServiceId = app.UseConsul();
-            applicationLifetime.ApplicationStopped.Register(() =>
-            {
-                client.Agent.ServiceDeregister(consulServiceId);
-                AutofacContainer.Dispose();
-            });
+            app.UseRabbitMQ();
         }
     }
 }

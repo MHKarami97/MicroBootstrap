@@ -1,7 +1,8 @@
 using System;
 using MicroBootstrap.Events;
-using MicroBootstrap.Messages;
+using MicroBootstrap.MessageBrokers;
 using Newtonsoft.Json;
+
 namespace Game.Services.Messaging.Core.Messages.Events
 {
     [Message("game-event-sources")]
@@ -18,7 +19,7 @@ namespace Game.Services.Messaging.Core.Messages.Events
             Id = id;
             Score = score;
             IsWin = isWin;
-             UserId = userId;
+            UserId = userId;
         }
     }
 }

@@ -1,4 +1,3 @@
-using Autofac;
 using MicroBootstrap.Types;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
@@ -33,6 +32,7 @@ namespace MicroBootstrap.Mongo
                 return client.GetDatabase(options.Database);
             });
             serviceCollection.AddTransient<IMongoDbInitializer, MongoDbInitializer>();
+            serviceCollection.AddTransient<IMongoSessionFactory, MongoSessionFactory>();
 
             serviceCollection.AddTransient<IMongoDbSeeder, MongoDbSeeder>();
             RegisterConventions();
@@ -44,7 +44,7 @@ namespace MicroBootstrap.Mongo
             BsonSerializer.RegisterSerializer(typeof(decimal), new DecimalSerializer(BsonType.Decimal128));
             BsonSerializer.RegisterSerializer(typeof(decimal?),
                 new NullableSerializer<decimal>(new DecimalSerializer(BsonType.Decimal128)));
-            ConventionRegistry.Register("convey", new ConventionPack
+            ConventionRegistry.Register("conventions", new ConventionPack
             {
                 new CamelCaseElementNameConvention(),
                 new IgnoreExtraElementsConvention(true),

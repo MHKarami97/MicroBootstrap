@@ -1,7 +1,4 @@
-using MicroBootstrap.Consul;
-using MicroBootstrap.Fabio;
 using MicroBootstrap.WebApi;
-using MicroBootstrap.RabbitMq;
 using Microsoft.AspNetCore.Builder;
 using MicroBootstrap.Mongo;
 using MicroBootstrap.Redis;
@@ -16,6 +13,10 @@ using Game.Services.Messaging.Core.Messages.Events;
 using Game.Services.Messaging.Core.Entities;
 using Game.Services.Messaging.Infrastructure.Mongo.Repositories;
 using Game.Services.Messaging.Core.Repositories;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
+using MicroBootstrap.MessageBrokers;
+using MicroBootstrap.Discovery.Consul.Consul;
+using MicroBootstrap.LoadBalancer.Fabio;
 
 namespace Game.Services.Messaging.Infrastructure
 {
@@ -30,7 +31,7 @@ namespace Game.Services.Messaging.Infrastructure
                 .AddHttpClient()
                 .AddConsul()
                 .AddFabio()
-                .AddRabbitMq()
+                .AddRabbitMQ()
                 .AddMongo()
                 .AddRedis()
                 .AddOpenTracing()
@@ -49,13 +50,8 @@ namespace Game.Services.Messaging.Infrastructure
             app.UseErrorHandler()
                  .UseJaeger()
                  .UseAppMetrics()
-                 .UseRabbitMq().SubscribeEvent<GameEventSourceAdded>();
+                 .UseRabbitMQ().SubscribeEvent<GameEventSourceAdded>();
 
-            var consulServiceId = app.UseConsul();
-            applicationLifetime.ApplicationStopped.Register(() =>
-            {
-                client.Agent.ServiceDeregister(consulServiceId);
-            });
             return app;
         }
     }

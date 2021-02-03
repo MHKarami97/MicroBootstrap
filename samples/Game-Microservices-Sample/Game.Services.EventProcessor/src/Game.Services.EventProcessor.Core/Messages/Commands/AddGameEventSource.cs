@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using MicroBootstrap.Commands;
-using MicroBootstrap.Messages;
+using MicroBootstrap.MessageBrokers;
 
 namespace Game.Services.EventProcessor.Core.Messages.Commands
 {
@@ -16,7 +16,7 @@ namespace Game.Services.EventProcessor.Core.Messages.Commands
         [JsonConstructor]
         public AddGameEventSource(Guid id, int score, bool isWin, Guid userId)
         {
-            Id = id;
+            Id = id == Guid.Empty ? Guid.NewGuid() : id;
             Score = score;
             IsWin = isWin;
             UserId = userId;

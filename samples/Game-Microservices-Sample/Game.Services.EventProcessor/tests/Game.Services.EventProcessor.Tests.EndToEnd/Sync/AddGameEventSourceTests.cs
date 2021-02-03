@@ -26,7 +26,7 @@ namespace Game.Services.EventProcessor.Tests.EndToEnd.Sync
         [Fact]
         public async Task add_game_event_source_endpoint_should_return_http_status_code_created()
         {
-            var command = new AddGameEventSource(Guid.NewGuid(), 10, true);
+            var command = new AddGameEventSource(Guid.NewGuid(), 10, true, Guid.NewGuid());
 
             var response = await Act(command);
 
@@ -35,35 +35,35 @@ namespace Game.Services.EventProcessor.Tests.EndToEnd.Sync
             response.Headers.Location.ShouldNotBeNull();
             response.Headers.Location.ToString().ShouldBe($"game-event-sources/{command.Id}");
         }
-        
+
         [Fact]
         public async Task add_game_event_source_endpoint_should_add_document_with_given_id_to_database()
         {
-            var command = new AddGameEventSource(Guid.NewGuid(), 10, true);
-        
+            var command = new AddGameEventSource(Guid.NewGuid(), 10, true, Guid.NewGuid());
+
             await Act(command);
-        
+
             var document = await _mongoDbFixture.GetAsync(command.Id);
-        
+
             document.ShouldNotBeNull();
             document.Id.ShouldBe(command.Id);
             document.IsWin.ShouldBe(command.IsWin);
             document.Score.ShouldBe(command.Score);
         }
 
-         [Fact]
-         public async Task add_game_event_source_endpoint_should_return_location_header_with_correct_id()
-         {
-             var command = new AddGameEventSource(Guid.NewGuid(), 10, true);
-         
-             var response = await Act(command);
-         
-             var locationHeader = response.Headers.FirstOrDefault(h => h.Key == "Location").Value.First();
-         
-             locationHeader.ShouldNotBeNull();
-             locationHeader.ShouldBe($"game-event-sources/{command.Id}");
-         }
-        
+        [Fact]
+        public async Task add_game_event_source_endpoint_should_return_location_header_with_correct_id()
+        {
+            var command = new AddGameEventSource(Guid.NewGuid(), 10, true, Guid.NewGuid());
+
+            var response = await Act(command);
+
+            var locationHeader = response.Headers.FirstOrDefault(h => h.Key == "Location").Value.First();
+
+            locationHeader.ShouldNotBeNull();
+            locationHeader.ShouldBe($"game-event-sources/{command.Id}");
+        }
+
 
         #region Arrange
 

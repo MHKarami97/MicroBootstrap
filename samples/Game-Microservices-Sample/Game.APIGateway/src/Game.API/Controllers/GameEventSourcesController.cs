@@ -1,8 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using MicroBootstrap.Queries;
-using MicroBootstrap.RabbitMq;
-using MicroBootstrap.Types;
 using MicroBootstrap.WebApi;
 using Game.API.DTO;
 using Game.API.Messages.Commands;
@@ -11,6 +9,9 @@ using Game.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenTracing;
+using MicroBootstrap.MessageBrokers;
+using Game.API.Infrastructure;
+using MicroBootstrap.MessageBrokers.RabbitMQ;
 
 namespace Game.API.Controllers
 {
@@ -20,7 +21,8 @@ namespace Game.API.Controllers
         private readonly IGameEventProcessorService _gameEventProcessorService;
 
         public GameEventSourcesController(IBusPublisher busPublisher, ITracer tracer,
-         IGameEventProcessorService eventProcessorService) : base(busPublisher, tracer)
+         IGameEventProcessorService eventProcessorService, ICorrelationContextBuilder correlationContextBuilder)
+         : base(busPublisher, tracer, correlationContextBuilder)
         {
             this._gameEventProcessorService = eventProcessorService;
         }
@@ -37,9 +39,10 @@ namespace Game.API.Controllers
             => Single(await _gameEventProcessorService.GetAsync(id));
 
         [HttpPost]
-        public async Task<IActionResult> Post(AddGameEventSource command)
-            => await SendAsync(command.Bind(c => c.Id, command.Id == default ? Guid.NewGuid() : command.Id),
-                resourceId: command.Id, resource: "game-event-sources");
+        public async Task Post(AddGameEventSource command)
+        {
+            await SendAsync(command.Bind(c => c.Id, command.Id == default ? Guid.NewGuid() : command.Id));
+        }
 
         // [HttpPut("{id}")]
         // public async Task<IActionResult>  Put(Guid id, UpdateGameEventSource command)

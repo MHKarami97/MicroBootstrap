@@ -1,6 +1,6 @@
 using System;
 using MicroBootstrap.Commands;
-using MicroBootstrap.Messages;
+using MicroBootstrap.MessageBrokers;
 using Newtonsoft.Json;
 
 namespace Game.API.Messages.Commands

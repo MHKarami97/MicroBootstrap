@@ -42,13 +42,20 @@ namespace MicroBootstrap.WebApi
         private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            Converters = { new StringEnumConverter(true) }
+            Converters = { new StringEnumConverter(new CamelCaseNamingStrategy(), true) }
         };
 
-        public static IApplicationBuilder UseApiEndpoints(this IApplicationBuilder app, Action<IEndpointsBuilder> build,
-             Action<IApplicationBuilder> middleware = null)
+        public static IApplicationBuilder UseEndpoints(this IApplicationBuilder app, Action<IEndpointsBuilder> build,
+             bool useAuthorization = true, Action<IApplicationBuilder> middleware = null)
         {
             var definitions = app.ApplicationServices.GetRequiredService<WebApiEndpointDefinitions>();
+
+            app.UseRouting();
+            if (useAuthorization)
+            {
+                app.UseAuthorization();
+            }
+
             middleware?.Invoke(app);
 
             app.UseEndpoints(router => build(new EndpointsBuilder(router, definitions)));
@@ -57,7 +64,7 @@ namespace MicroBootstrap.WebApi
         }
 
         [Description("By default Newtonsoft JSON serializer is being used and it sets Kestrel's and IIS ServerOptions AllowSynchronousIO = true")]
-        public static void AddWebApi(this IServiceCollection serviceCollection, Action<IMvcCoreBuilder> configureMvc = null,
+        public static IServiceCollection AddWebApi(this IServiceCollection serviceCollection, Action<IMvcCoreBuilder> configureMvc = null,
             IJsonSerializer jsonSerializer = null, string webApiSectionName = WebApiSectionName, string appSectionName = AppsectionName)
         {
             serviceCollection.AddSingleton<IServiceId, ServiceId>();
@@ -82,7 +89,7 @@ namespace MicroBootstrap.WebApi
                 var factory = new Open.Serialization.Json.Newtonsoft.JsonSerializerFactory(new JsonSerializerSettings
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    Converters = { new StringEnumConverter(true) }
+                    Converters = { new StringEnumConverter(new CamelCaseNamingStrategy(), true) }
                 });
                 jsonSerializer = factory.GetSerializer();
             }
@@ -125,13 +132,17 @@ namespace MicroBootstrap.WebApi
 
             serviceCollection.AddTransient<IRequestDispatcher, RequestDispatcher>();
             serviceCollection.AddErrorHandler<EmptyExceptionToResponseMapper>();
+
+            return serviceCollection;
         }
 
-        public static void AddErrorHandler<T>(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddErrorHandler<T>(this IServiceCollection serviceCollection)
             where T : class, IExceptionToResponseMapper
         {
             serviceCollection.AddTransient<ErrorHandlerMiddleware>();
             serviceCollection.AddSingleton<IExceptionToResponseMapper, T>();
+
+            return serviceCollection;
         }
 
         public static IApplicationBuilder UseErrorHandler(this IApplicationBuilder builder)

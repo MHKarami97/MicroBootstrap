@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MicroBootstrap;
@@ -15,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Game.Services.Messaging.Application;
 using Game.Services.Messaging.Infrastructure;
-using System.Reflection;
 
 namespace Game.Services.Messaging.API
 {

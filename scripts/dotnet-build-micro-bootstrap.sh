@@ -6,4 +6,5 @@ case "${Branch_Name}" in
     ;;
 esac
 
+cd src/MicroBootstrap
 dotnet build -c Release --no-cache
