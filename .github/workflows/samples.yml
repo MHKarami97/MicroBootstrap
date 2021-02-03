@@ -68,3 +68,15 @@ jobs:
        sh ./scripts/dotnet-publish-event-processcor-service.sh
        sh ./scripts/dotnet-publish-api-gateway.sh
        sh ./scripts/dotnet-publish-messaging-service.sh
+<<<<<<< HEAD:.github/workflows/samples.yml
+=======
+       sh ./scripts/docker-publish-event-processor-service.sh
+       sh ./scripts/docker-publish-messaging-service.sh
+       sh ./scripts/docker-publish-api-gateway.sh
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+          name: nupkg
+          path: ./src/MicroBootstrap/bin/Release/*.nupkg
+>>>>>>> 660bea43d66379cbb90aa23458b3a9d388b857bc:.github/workflows/dotnet-core.yml
