@@ -10,15 +10,15 @@ MicroBootstrap is a framework for quickly and conveniently creating microservice
 
 In [samples](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples) folder I've put some microservices sample that used this infrastructure for better understanding.
 
+## Give a Star! ⭐️
+If you like or are using this repository to learn or start your solution, please give it a star. Thanks!
+
 ## How to use?
 For using [this package](https://www.nuget.org/packages/MicroBootstrap/) you can easily add it to your microservices project and use its infrastructure in your project to get rid of any annoying configuration and implement infrastructural stuff for microservice purpose. just add this command to add NuGet package:
 
 ``` bash
 dotnet add package MicroBootstrap
 ```
-
-## Give a Star! ⭐️
-If you like or are using this repository to learn or start your solution, please give it a star. Thanks!
 
 ## Thecnologies & Stack
 ----------------
