@@ -35,7 +35,7 @@
     <PackageLicenseExpression/>
     <PackageIconUrl>https://github.com/mehdihadeli/MicroBootstrap/blob/master/src/MicroBootstrap/icon.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/mehdihadeli/MicroBootstrap</PackageProjectUrl>
-    <PackageTags>.net;c#;dotnet;dotnetcore;aspnetcore; boilerplate; application-framework; web-framework; framework;webapi; domain-driven-design;architecture;microservices;cqrs; rabbitmQ; microservices-framework; clean-architecture;docker;kubernetes;</PackageTags>
+    <PackageTags>.net; c#; dotnet; dotnetcore; aspnetcore; boilerplate; application-framework;framework;webapi; service-discovery; consul; redis; oauth; load-balancer; tracing; outbox; domain-driven-design;architecture;microservices; cqrs; ddd; event-sourcing; mongodb; ef-core; service-mesh; message-bus;message-broker;rabbitmQ; microservices-framework; clean-architecture; docker; kubernetes;</PackageTags>
     <PackageReleaseNotes>See https://github.com/mehdihadeli/MicroBootstrap/blob/master/README.md for details. aslo samples code for using this package available here https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
