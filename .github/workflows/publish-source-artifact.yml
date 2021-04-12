@@ -16,8 +16,3 @@ jobs:
       with:
         name: source
         path: src
-        
-    - name: Download files to publish
-      uses: actions/download-artifact@v2
-      with:
-        name: source
