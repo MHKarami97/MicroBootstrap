@@ -14,8 +14,8 @@ jobs:
     - name: Save src folder
       uses: actions/upload-artifact@v2
       with:
-        name: download source
-        path: ~/src
+        name: source
+        path: src
   deploy:
     runs-on: ubuntu-latest
     
@@ -23,4 +23,4 @@ jobs:
       - name: Download files to publish
         uses: actions/download-artifact@v2
         with:
-          name: download source
+          name: source
