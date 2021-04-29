@@ -7,8 +7,8 @@ on:
 
 env:
   PROJECT_PATH: src/MicroBootstrap.sln
-  ZIP_PATH: src/MicroBootstrap/bin/Release/net5.0-windows/win-x86/publish/src/MicroBootstrap.zip
-  PUBLISH_PATH: src/HandySub/bin/Release/net5.0-windows/win-x86/publish
+  ZIP_PATH: src/MicroBootstrap/bin/Release/netcoreapp3.1-windows/win-x86/publish/src/MicroBootstrap.zip
+  PUBLISH_PATH: src/HandySub/bin/Release/netcoreapp3.1-windows/win-x86/publish
 
 jobs:
   deploy:
