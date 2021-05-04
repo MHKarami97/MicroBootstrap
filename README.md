@@ -7,9 +7,18 @@ MicroBootstrap is a framework for quickly and conveniently creating microservice
 [![Actions Status](https://github.com/mehdihadeli/MicroBootstrap/workflows/publish/badge.svg?branch=master)](https://github.com/mehdihadeli/MicroBootstrap/actions)
 <a href="https://www.nuget.org/packages/MicroBootstrap/" alt="nuget package"><img src="https://buildstats.info/nuget/Microbootstrap?includePreReleases=true" /></a>
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)][tweet] 
 
-## Give a Star! ⭐️
-If you like or are using this repository to learn or start your solution, please give it a star. Thanks!
+
+## Support ⭐
+If you like my work, feel free to:
+
+- ⭐ this repository. And we will be happy together :)
+- [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)][tweet] about MicroBootstrap
+
+Thanks a bunch for supporting me!
+
+[tweet]: https://twitter.com/intent/tweet?url=https://github.com/mehdihadeli/MicroBootstrap&text=MicroBootstrap%20is%20a%20framework%20for%20quickly%20and%20conveniently%20creating%20microservices%20on%20.NET%20Core&hashtags=dotnetcore,dotnet,csharp,microservices,netcore,aspnetcore,ddd,cqrs
 
 ## How to use?
 For using [this package](https://www.nuget.org/packages/MicroBootstrap/) you can easily add it to your microservices project and use its infrastructure in your project to get rid of any annoying configuration and implement infrastructural stuff for microservice purpose. just add this command to add NuGet package:
