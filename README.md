@@ -12,7 +12,6 @@ MicroBootstrap is a framework for quickly and conveniently creating microservice
 [![Actions Status](https://github.com/mehdihadeli/MicroBootstrap/workflows/publish/badge.svg?branch=master)](https://github.com/mehdihadeli/MicroBootstrap/actions)
 <a href="https://www.nuget.org/packages/MicroBootstrap/" alt="nuget package"><img src="https://buildstats.info/nuget/Microbootstrap?includePreReleases=true" /></a>
 
-
 ## Support ⭐
 If you like my work, feel free to:
 
@@ -28,6 +27,53 @@ For using [this package](https://www.nuget.org/packages/MicroBootstrap/) you can
 
 ``` bash
 dotnet add package MicroBootstrap
+```
+
+## Scaling Microservices
+ ----------------
+ For scaling microservice in this project we have 2 option:
+ * Using Consul and Fabio: for scaling our microservices we can use of consul and fabio and use of a customize algorithm for load balancing
+ * Using Kubernetes: use of kubernetes for scaling but kubernetes limted to round robin aprouch for load balancing      
+ 
+ For `load testing` we can use different tools but I use this tool [NBomber](https://nbomber.com/). you can use visual studio load test project or other solutions.
+ 
+## How to start with Docker Compose?
+----------------
+
+Open `samples\Game-Microservices-Sample\deployments\docker-compose` directory and execute bellow command:
+
+```
+docker-compose -f infrastructure.yml up -d
+```
+you can also execute other scripts in [docker-compose](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/docker-compose) folder like `mongo-rabbit-redis.yml` to run only theses infrastructure on your machine.
+
+It will start the required infrastructure in the background. Then, you can start the services independently of each other via `dotnet run` or `./scripts/start.sh` command in each microservice or run them all at once using Docker that create and run needed docker images in compose file:
+
+```
+docker-compose -f services-local.yml up
+```
+or using pre-build docker images in docker hub with using this docker compose:
+
+```
+docker-compose -f services.yml up
+```
+
+## How to start with Kubernetes?
+----------------
+For setup your local environment for using kubernetes you can use different approuch but I personally perfer to use [K3s](https://k3s.io/) from rancher team, it is awsome like [rancher](https://rancher.com/) for kubernetes management :)        
+
+Open `samples\Game-Microservices-Sample\deployments\k8s` directory, in this directory, there are two folders [infrastructure](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/infrastructure) and [micro-services](https://github.com/mehdihadeli/MicroBootstrap/tree/master/samples/Game-Microservices-Sample/deployments/k8s/micro-services). in `infrastructure` folder exits all needed infrastructure for executing our microservices that we use `kubectl apply` for running them. for example for running `mongodb` on our cluster we should use these commands:
+
+```
+kubectl apply -f mongo-persistentvolumeclaim.yaml
+kubectl apply -f mongo-deployment.yaml
+kubectl apply -f mongo-service.yaml
+```
+In `micro-services` folder there are our services. for running our services on our cluster we should `kubectl apply` command for example:
+
+```
+kubectl apply -f messaging-service-deployment.yaml
+kubectl apply -f messaging-service-service.yaml
 ```
 
 ## Thecnologies & Stack
