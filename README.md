@@ -101,7 +101,6 @@ kubectl apply -f messaging-service-service.yaml
 ----------------
 -  [ ] Integration with Service Mesh and Istio
 -  [ ] Integration with Marten and Event Sourcing
--  [ ] Integration with MediateR
 -  [ ] Integration with Kafka
 
 ## 🤝 Contributing

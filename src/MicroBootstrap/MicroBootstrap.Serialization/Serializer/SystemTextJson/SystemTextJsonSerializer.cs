@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MicroBootstrap.Serializer
+namespace MicroBootstrap.Serialization.Serializer
 {
     public class SystemTextJsonSerializer : ITextSerializer
     {

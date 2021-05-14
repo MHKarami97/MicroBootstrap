@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace MicroBootstrap.Serializer
+namespace MicroBootstrap.Serialization
 {
-    public static class Extensions
+    public static class SerializerExtensions
     {
         public static T Deserialize<T>(this ISerializer serializer, Stream data)
         {

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace MicroBootstrap.Serializer.JsonNet
+namespace MicroBootstrap.Serialization.Serializer
 {
      public class JsonNetSerializer : ITextSerializer {
         private readonly JsonSerializer _serializer;

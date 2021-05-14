@@ -3,7 +3,7 @@ using System.IO;
 using Utf8Json;
 using Utf8Json.Resolvers;
 
-namespace MicroBootstrap.Serializer
+namespace MicroBootstrap.Serialization.Serializer
 {
       public class Utf8JsonSerializer : ITextSerializer {
         private readonly IJsonFormatterResolver _formatterResolver;

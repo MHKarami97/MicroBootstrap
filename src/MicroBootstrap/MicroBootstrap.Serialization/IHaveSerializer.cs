@@ -1,4 +1,4 @@
-namespace MicroBootstrap.Serializer
+namespace MicroBootstrap.Serialization
 {
     public interface IHaveSerializer
     {

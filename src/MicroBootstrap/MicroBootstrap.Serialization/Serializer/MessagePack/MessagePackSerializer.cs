@@ -3,7 +3,7 @@ using System.IO;
 using MessagePack;
 using MessagePack.Resolvers;
 
-namespace MicroBootstrap.Serializer
+namespace MicroBootstrap.Serialization.Serializer
 {
     public class MessagePackSerializer : ISerializer {
         private readonly MessagePackSerializerOptions _options;

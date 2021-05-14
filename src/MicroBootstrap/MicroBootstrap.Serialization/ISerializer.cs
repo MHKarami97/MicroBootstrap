@@ -1,7 +1,8 @@
 using System;
 using System.IO;
+using MicroBootstrap.Serialization.Serializer;
 
-namespace MicroBootstrap.Serializer
+namespace MicroBootstrap.Serialization
 {
     public interface ISerializer
     {
