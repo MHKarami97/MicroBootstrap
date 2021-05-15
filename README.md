@@ -81,7 +81,6 @@ kubectl apply -f messaging-service-service.yaml
 * .Net Core 3.1
 * RabbitMQ
 * MongoDB
-* Docker
 * RESTEeas
 * Consul
 * Fabio
